@@ -31,7 +31,7 @@ export default function Home() {
     ]
     const [currentIndex, setCurrentIndex] = useState<number>(2)
 
-    const updateP = usePath((state) => state.updatePath)
+    // const updateP = usePath((state) => state.updatePath)
 
     useEffect(() => {
         // getRoute()
