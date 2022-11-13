@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <div className='bg-amber-100 w-full  px-2 space-y-5 rounded-tl-[50px] mt-[50px] rounded-tr-[50px]'>
             <div className='py-7 border-b-[2px] border-red-800 w-full flex sm:flex-row flex-col justify-center items-center space-x-3 space-y-3'>
-                <p className='font-semibold text-lg'>Donate to Vatsalya Seva Santhan</p>
+                <p className='font-semibold text-lg pt-2'>Donate to Vatsalya Seva Santhan</p>
                 <button className='flex flex-row justify-center items-center'>
                     <p className='border-2 rounded-tl-lg rounded-bl-lg border-red-500 px-5 py-2'>5000₹</p>
                     <p className='bg-red-500 px-3 py-2 text-white rounded-tr-lg rounded-br-lg'>Donate</p>
