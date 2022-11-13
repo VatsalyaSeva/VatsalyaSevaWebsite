@@ -1,5 +1,6 @@
 
 import '../styles/globals.scss'
+import Footer from './footer'
 import NavBar from './nav-bar'
 export default function RootLayout({
   children,
@@ -13,6 +14,7 @@ export default function RootLayout({
       <body className=''>
         <NavBar />
         {children}
+        <Footer />
       </body>
     </html>
   )
