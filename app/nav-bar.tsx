@@ -15,14 +15,14 @@ export default function NavBar() {
                     height={40}
                     alt="logo"
                 />
-                <p className='sm:text-xl lg:text-2xl text-lg font-bold '>Vatsalya Seva </p>
+                <p className='sm:text-xl lg:text-2xl text-sm font-bold '>Vatsalya Seva </p>
             </div>
-            <div className=' flex-row space-x-2 hidden sm:flex'>
-                <Link className={`nav_link lg:text-lg`} href={'/'} prefetch={false} replace={false}>Home</Link>
-                <Link className={`nav_link lg:text-lg`} href={'/donations'} prefetch={false} replace={false}>Donations</Link>
-                <Link className={`nav_link lg:text-lg`} href={'/events'} prefetch={false} replace={false}>Events</Link>
-                <Link className={`nav_link lg:text-lg`} href={'/jobs'} prefetch={false} replace={false}>Jobs</Link>
-
+            <div className='flex flex-row space-x-1 sm:space-x-2 '>
+                <Link className={`nav_link lg:text-lg sm:px-3 hidden sm:block`} href={'/'} prefetch={false} replace={false}>Home</Link>
+                <Link className={`nav_link lg:text-lg sm:px-3 hidden sm:block`} href={'/donations'} prefetch={false} replace={false}>Donations</Link>
+                <Link className={`nav_link lg:text-lg sm:px-3 hidden sm:block`} href={'/events'} prefetch={false} replace={false}>Events</Link>
+                <Link className={`nav_link lg:text-lg sm:px-3 hidden sm:block`} href={'/jobs'} prefetch={false} replace={false}>Jobs</Link>
+                <button className='donate_btn'>Donate Now</button>
             </div>
         </div>
     )
