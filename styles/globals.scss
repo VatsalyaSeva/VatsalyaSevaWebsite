@@ -5,7 +5,7 @@
 
 @layer components {
     .nav_link {
-        @apply text-lg px-3 py-1 rounded-full;
+        @apply text-sm text-sm px-3 py-1 rounded-full;
 
         &:hover {
             @apply bg-red-600 text-white shadow-lg

@@ -42,7 +42,7 @@ export default function Slider() {
         <div>
             <img
                 src={images[activeIndex]}
-                className={'w-full object-cover h-[550px]'}
+                className={'w-full object-fill h-[300px] sm:h-[400px] lg:h-[550px]'}
             />
         </div>
     )
