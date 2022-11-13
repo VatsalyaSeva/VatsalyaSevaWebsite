@@ -39,11 +39,15 @@ export default function Slider() {
     }, [activeIndex])
 
     return (
-        <div>
+        <div className='relative'>
             <img
                 src={images[activeIndex]}
-                className={'w-full object-fill h-[300px] sm:h-[400px] lg:h-[550px]'}
+                className={'w-full object-fill h-[300px] sm:h-[400px] lg:h-[580px]'}
             />
+            <div className='absolute z-[2] bottom-0 bg-gradient-to-t from-gray-900 to-transparent w-full h-[300px] sm:h-[400px] lg:h-[580px] flex justify-end'>
+
+            </div>
+
         </div>
     )
 }
