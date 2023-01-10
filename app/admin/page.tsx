@@ -55,9 +55,9 @@ export default function admin() {
                             <p
                                 onClick={() => setCurrentPage(pages.jobList)}
                                 className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.jobList && 'border-b border-amber-200'}`}>Job List </p>
-                            <p
+                            {/* <p
                                 onClick={() => setCurrentPage(pages.applicants)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.applicants && 'border-b border-amber-200'}`}>Applicants</p>
+                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.applicants && 'border-b border-amber-200'}`}>Applicants</p> */}
                         </div>}
                     <p
                         onClick={() => setCurrentNav(nav.Donations)}
@@ -71,8 +71,8 @@ export default function admin() {
                 </div>
             </div>
             <div className='px-5 py-5 w-[85vw]  flex flex-col items-center justify-center'>
-                {currentPage == pages.applicants &&
-                    <Applicants setPage={setCurrentPage} setNav={setCurrentNav} />}
+                {/* {currentPage == pages.applicants &&
+                    <Applicants setPage={setCurrentPage} setNav={setCurrentNav} />} */}
                 {currentPage == pages.createEvent &&
                     <CreateEvent setPage={setCurrentPage} setNav={setCurrentNav} />}
                 {currentPage == pages.createJob &&

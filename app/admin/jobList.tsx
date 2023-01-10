@@ -1,7 +1,8 @@
+"use client"
 import { Vacancy } from "@prisma/client"
 import { useEffect, useMemo, useState } from "react"
 import { useTable } from 'react-table';
-
+import { useRouter } from "next/navigation";
 type props = {
     setPage: (page: string) => void,
     setNav: (nav: string) => void
@@ -11,16 +12,18 @@ export default function JobList({ setPage, setNav }: props) {
     const [jobList, setJobList] = useState<Vacancy[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [selectedJob, setSelectedJob] = useState<Vacancy>({} as Vacancy)
+    const route = useRouter()
     const deleteVacancy = (id: string) => {
+        setIsLoading(true)
         fetch('api/admin/deleteSingleVaccancy', {
             method: 'POST',
             body: JSON.stringify({
                 id: id
             })
         }).then(res => res.json()).then(data => {
+            setIsLoading(false)
             if (data.status == 200) {
-                setJobList(data.data)
-                setIsLoading(false)
+                getAllVacancy()
             }
         })
     }
@@ -46,7 +49,7 @@ export default function JobList({ setPage, setNav }: props) {
         <div className="grid place-content-end">
             <p className="font-bold text-xl text-black">Loading Data...</p>
         </div> :
-        <div className="w-[70vw] h-[100vh]">
+        <div className="w-[70vw] h-[100vh] space-y-3">
             {jobList.length > 0 ?
                 jobList.map((item, index) => {
                     return (
@@ -57,11 +60,14 @@ export default function JobList({ setPage, setNav }: props) {
 
                             </div>
                             <div className="flex flex-row justify-center items-center space-x-2">
-                                <button className="bg-green-500 text-white px-3 py-1 rounded-xl">View</button>
-                                <button className="bg-yellow-500 text-white px-3 py-1 rounded-xl">Edit</button>
+                                <button className="bg-green-500 text-white px-3 py-1 rounded-lg" 
+                                    onClick={()=> route.push(`/admin/viewSingleJob?id=${item.id}`)}>View</button>
+                                <button className="bg-yellow-500 text-white px-3 py-1 rounded-lg"
+                                    onClick={()=> route.push(`/admin/editSingleJob?id=${item.id}`)}
+                                >Edit</button>
                                 <button
                                     onClick={() => deleteVacancy(item.id.toString())}
-                                    className="bg-red-500 text-white px-3 py-1 rounded-xl">Delete
+                                    className="bg-red-500 text-white px-3 py-1 rounded-lg">Delete
                                 </button>
                             </div>
                         </div>

@@ -55,7 +55,6 @@ export default async function handler(
                 fees: parseInt(applicationFee)
             }
         })
-        console.log(newJob)
         res.status(200).json({
             status: '200',
             message: 'Job created success',

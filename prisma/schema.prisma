@@ -47,7 +47,7 @@ model Donation {
 model Vacancy {
   id                 Int          @id @default(autoincrement())
   vacancyName        String
-  vacancyDescription String
+  vacancyDescription String       @db.Text()
   jobCount           Int
   salary             Int
   fees               Int
