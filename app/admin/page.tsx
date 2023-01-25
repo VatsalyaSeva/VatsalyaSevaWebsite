@@ -7,12 +7,14 @@ import CreateJobs from './createJobs'
 import DonationList from './donationList'
 import EventList from './eventList'
 import JobList from './jobList'
+import CreateMember from './createMember'
 
 export default function admin() {
     let nav = {
         Events: 'Events',
         Jobs: 'Jobs',
-        Donations: 'Donations'
+        Donations: 'Donations',
+        Members:'Members'
     }
 
     let pages = {
@@ -21,7 +23,9 @@ export default function admin() {
         createJob: 'createJob',
         jobList: 'jobList',
         applicants: 'applicants',
-        donationList: 'donationList'
+        donationList: 'donationList',
+        membersList:'membersList',
+        createMember:'createMember'
     }
 
     const [currentNav, setCurrentNav] = useState<string>('Events')
@@ -32,6 +36,18 @@ export default function admin() {
             <div className="w-[15vw] min-w-[200px] h-[100%] rounded-br-xl shadow-xl bg-amber-700 py-5 px-5 ">
                 <p className='text-2xl font-bold text-white'>Admin Panel</p>
                 <div className='pt-10'>
+                <p
+                    onClick={() => setCurrentNav(nav.Members)}
+                    className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Members && 'font-bold text-xl'}`}>Members</p>
+                {currentNav == nav.Members &&
+                    <div>
+                        <p
+                            onClick={() => setCurrentPage(pages.createMember)}
+                            className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.createEvent && 'border-b border-amber-200'}`}>Create member</p>
+                        <p
+                            onClick={() => setCurrentPage(pages.membersList)}
+                            className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.eventList && 'border-b border-amber-200'}`}>Members List </p>
+                    </div>}
                     <p
                         onClick={() => setCurrentNav(nav.Events)}
                         className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Events && 'font-bold text-xl'}`}>Events</p>
@@ -71,8 +87,8 @@ export default function admin() {
                 </div>
             </div>
             <div className='px-5 py-5 w-[85vw]  flex flex-col items-center justify-center'>
-                {/* {currentPage == pages.applicants &&
-                    <Applicants setPage={setCurrentPage} setNav={setCurrentNav} />} */}
+                {currentPage == pages.createMember &&
+                    <CreateMember setPage={setCurrentPage} setNav={setCurrentNav} />}
                 {currentPage == pages.createEvent &&
                     <CreateEvent setPage={setCurrentPage} setNav={setCurrentNav} />}
                 {currentPage == pages.createJob &&

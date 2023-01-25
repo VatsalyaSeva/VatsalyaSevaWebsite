@@ -28,36 +28,36 @@ apiRoute.use(uploadMiddleware);
 
 apiRoute.post(async (req, res) => {
     const { memberName, phoneNumber, email, role } = req.body
-
+    console.log(req.files)
     type file = {
         destination: string,
         filename: string,
         mimetype: string
     }
 
-    let imageUrlList: Array<{ image: string }> = []
+    // let imageUrlList: Array<{ image: string }> = []
 
-    req.files.forEach((item: file) => {
-        if (item.mimetype.startsWith('image/')) {
-            imageUrlList.push({ image: `members/${item.filename}` })
-        }
-    })
+    // req.files.forEach((item: file) => {
+    //     if (item.mimetype.startsWith('image/')) {
+    //         imageUrlList.push({ image: `members/${item.filename}` })
+    //     }
+    // })
 
-    const newMember = await prisma.members.create({
-        data: {
-            name: memberName,
-            phoneNumber: phoneNumber,
-            email: email,
-            role: role,
-            imagePath: imageUrlList[0].image
-        },
-    })
+    // const newMember = await prisma.members.create({
+    //     data: {
+    //         name: memberName,
+    //         phoneNumber: phoneNumber,
+    //         email: email,
+    //         role: role,
+    //         imagePath: imageUrlList[0]
+    //     },
+    // })
 
-    // console.log('newMember', newMember)
+    // // console.log('newMember', newMember)
 
     res.status(200).json({
         code: 200,
-        data: newMember
+        data: ''
     })
 })
 
