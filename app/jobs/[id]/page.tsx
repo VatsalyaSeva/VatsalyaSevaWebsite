@@ -4,6 +4,18 @@ import React, { useEffect, useState } from 'react'
 import UserLayout from '../../userLayout'
 import { useRouter } from 'next/navigation';
 import { Vacancy } from '@prisma/client';
+
+
+const fetchJobData = async (id:string,callback:(data)=> void)=>{
+    let res = await fetch(`/api/admin/jobs/getSingleJob?id=${id}`,{
+        method:"GET"
+    })
+    let data = await res.json()
+    if(data.code == 200){
+        callback(data.data)
+    }
+}
+
 export default function jobs({ params, searchParams }) {
     const route = useRouter()
     const [name, setName] = useState<string>('')
@@ -13,6 +25,11 @@ export default function jobs({ params, searchParams }) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [serverError, setServerError] = useState<string>('')
+    const [data,setData] = useState<Vacancy>({} as Vacancy)
+
+    useEffect(()=>{
+        fetchJobData(params.id,setData)
+    },[])
 
     const handleSubmit = (e) => {
         e.preventDefault()
