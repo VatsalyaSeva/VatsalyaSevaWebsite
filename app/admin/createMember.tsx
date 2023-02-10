@@ -1,4 +1,4 @@
-import { useState, FC } from "react"
+import { useState, FC, FormEvent } from "react"
 
 let nav = {
     Events: 'Events',
@@ -34,7 +34,7 @@ export default function CreateMember({ setPage, setNav }: props) {
     const [loadingMsg, setLoadingMsg] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         let formData = new FormData();
 

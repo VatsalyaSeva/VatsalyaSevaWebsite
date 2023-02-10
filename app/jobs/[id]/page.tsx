@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import UserLayout from '../../userLayout'
 import { useRouter } from 'next/navigation';
 import { Vacancy } from '@prisma/client';
@@ -31,7 +31,7 @@ export default function jobs(pageProp) {
         fetchJobData(pageProp.params.id,setData)
     },[])
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsLoading(true)
         const formData = new FormData()

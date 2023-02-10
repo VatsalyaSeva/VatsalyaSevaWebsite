@@ -14,7 +14,7 @@ export default function CreateEvent({ setPage, setNav }: props) {
     const [eventVideo, setEventVideo] = useState<FileList[]>([])
     const [error, setError] = useState<string>('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         let formData = new FormData();
 

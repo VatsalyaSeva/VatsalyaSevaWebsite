@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation'
-import React, { use, useEffect, useState } from 'react'
+import React, { FormEvent, use, useEffect, useState } from 'react'
 
 // import { Prisma } from '@prisma/client'
 import prisma from '../../prisma'
@@ -24,7 +24,7 @@ export default function login() {
     const [password, setPassword] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (email.length == 0 || regex.test(email)) {
             setError('Invalid Email')
