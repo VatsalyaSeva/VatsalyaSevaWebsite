@@ -16,7 +16,7 @@ const fetchJobData = async (id:string,callback:(data)=> void)=>{
     }
 }
 
-export default function jobs({ params, searchParams }) {
+export default function jobs(pageProp) {
     const route = useRouter()
     const [name, setName] = useState<string>('')
     const [phone, setPhone] = useState<string>('')
@@ -28,14 +28,14 @@ export default function jobs({ params, searchParams }) {
     const [data,setData] = useState<Vacancy>({} as Vacancy)
 
     useEffect(()=>{
-        fetchJobData(params.id,setData)
+        fetchJobData(pageProp.params.id,setData)
     },[])
 
     const handleSubmit = (e) => {
         e.preventDefault()
         setIsLoading(true)
         const formData = new FormData()
-        formData.append('id', params.id)
+        formData.append('id', pageProp.params.id)
         formData.append('name', name)
         formData.append('phone', phone)
         formData.append('email', email)
