@@ -9,7 +9,7 @@ import { Vacancy } from '@prisma/client'
 export default function EditJob(pageProp){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)
     let router = useRouter()
-    console.log(pageProp)
+    
 
     useEffect(()=>{
         getSingleJob()

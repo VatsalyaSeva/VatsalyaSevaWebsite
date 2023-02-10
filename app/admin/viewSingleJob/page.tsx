@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { GetServerSideProps } from 'next';
 
 
-export default function viewSingleJob({searchParams}){
+export default function viewSingleJob(pageProp){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)
     const [allApplicant,setAllApplicant] = useState<Applecants[]>([])
     const [isLoading,setIsLoading] = useState<boolean>(false)
@@ -23,7 +23,7 @@ export default function viewSingleJob({searchParams}){
 
     const getSingleJob = useCallback(()=>{
         setIsLoading(true)
-        fetch(`/api/admin/jobs/getSingleJob?id=${searchParams.id}`,{
+        fetch(`/api/admin/jobs/getSingleJob?id=${pageProp.searchParams.id}`,{
            method:'GET',
         }).then(res=> res.json()).then(data=> {
             if(data.code == 200){
