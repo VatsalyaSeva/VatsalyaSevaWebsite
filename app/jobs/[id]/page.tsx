@@ -31,7 +31,7 @@ export default function jobs(pageProp) {
         fetchJobData(pageProp.params.id,setData)
     },[])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         setIsLoading(true)
         const formData = new FormData()
