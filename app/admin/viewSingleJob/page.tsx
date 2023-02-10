@@ -3,8 +3,8 @@ import { Vacancy,Applecants } from '@prisma/client';
 import { SingleJobComponent } from './singleJobComponent'
 import React,{ useState,useEffect, useCallback } from 'react';
 import { Loader } from './loader'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { GetServerSideProps } from 'next';
 
@@ -55,10 +55,7 @@ export default function viewSingleJob({searchParams}){
             {isLoading ? <Loader isLoading={isLoading}/>:
             <div className='px-10 py-10'>
                 <button className='flex flex-row items-center space-x-2' onClick={()=> router.back()}>
-                    <FontAwesomeIcon
-                        icon={faArrowLeft}
-                        style={{ fontSize: 30,color: "orange" }}
-                    /> 
+                <p>leftarrow</p>
                     <p className='text-2xl font-bold py-2 items-center '>Back</p>
                 </button>
                 {serverError.length == 0 ?
