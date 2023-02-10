@@ -6,9 +6,10 @@ import { Vacancy } from '@prisma/client'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
-export default function EditJob({searchParams}){
+export default function EditJob(pageProp){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)
     let router = useRouter()
+    console.log(pageProp)
 
     useEffect(()=>{
         getSingleJob()
@@ -16,7 +17,7 @@ export default function EditJob({searchParams}){
 
     const getSingleJob = useCallback(()=>{
         setIsLoading(true)
-        fetch(`/api/admin/jobs/getSingleJob?id=${searchParams.id}`,{
+        fetch(`/api/admin/jobs/getSingleJob?id=${pageProp.searchParams.id}`,{
            method:'GET',
         }).then(res=> res.json()).then(data=> {
             if(data.code == 200){
