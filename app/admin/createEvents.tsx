@@ -10,8 +10,8 @@ export default function CreateEvent({ setPage, setNav }: props) {
     const [eventName, setEventName] = useState<string>('')
     const [eventDate, setEventDate] = useState<string>('')
     const [eventLocation, setEventLocation] = useState<string>('')
-    const [eventImage, setEventImage] = useState<FileList[]>([])
-    const [eventVideo, setEventVideo] = useState<FileList[]>([])
+    const [eventImage, setEventImage] = useState<Blob[]>([])
+    const [eventVideo, setEventVideo] = useState<Blob[]>([])
     const [error, setError] = useState<string>('')
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
