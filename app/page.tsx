@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react'
 import Slider from './slider'
 import UserLayout from './userLayout'
 import { useRouter } from 'next/navigation'
-import { Events, Vacancy } from '@prisma/client'
+import { Events, Vacancy,Image,Video } from '@prisma/client'
 import moment from 'moment'
 import Link from 'next/link'
 
 export default function Home() {
     const router = useRouter()
+    type SingleEventType =  Events & {imagesUrl: Image[];videoUrl: Video[];}
 
-    const [eventsList, setEvensList] = useState<Events[]>([])
+    const [eventsList, setEvensList] = useState<SingleEventType[]>([])
     const [jobList, setJobList] = useState<Vacancy[]>([])
 
     const getAllVacancy = () =>{
