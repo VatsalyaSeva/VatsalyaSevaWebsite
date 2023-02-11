@@ -11,45 +11,16 @@ import { api } from "../utils/api";
 
 const Home:NextPage = ()=> {
     const router = useRouter()
-    type SingleEventType =  Events & {imagesUrl: Image[];videoUrl: Video[];}
 
-    const [eventsList, setEvensList] = useState<SingleEventType[]>([])
+    const [eventsList, setEvensList] = useState<typeof getEvent['data']>([])
     const [jobList, setJobList] = useState<Vacancy[]>([])
-    const getAllVacancy = {}
-    const a = api.example.getAll.useQuery()
-    console.log(a.data)
-    // useEffect(()=>{
-    //     if(getAllVacancy.isSuccess){
-    //         setJobList(getAllVacancy.data)
-    //     }
-    // },[getAllVacancy.isSuccess])
+    const getEvent = api.event.getAll.useQuery()
 
-    // const getAllVacancy = () =>{
-    //     fetch('api/admin/getAllJobs', {
-    //         method: 'GET'
-    //     }).then(res => res.json()).then(data => {
-    //         if (data.status == 200) {
-    //             setJobList(data.data)
-
-    //         }
-    //     })
-    // }
-
-    const getAllEvents = () =>{
-        fetch('api/admin/getAllEvents', {
-            method: 'GET'
-        }).then(res => res.json()).then(data => {
-            if (data.status == 200) {
-                let today = moment(new Date())
-                setEvensList(data.data)
-            }
-        })
-    }
-
-    useEffect(() => {
-        getAllEvents()
-        // getAllVacancy()
-    }, [])
+    useEffect(()=>{
+        if(getEvent.isSuccess){
+            setEvensList(getEvent.data)
+        }
+    },[getEvent.data])
 
     return (
         <UserLayout>
