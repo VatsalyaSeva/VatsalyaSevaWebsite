@@ -86,12 +86,11 @@ export default function EditJob(pageProp:AppProps['pageProps']){
         <div className=' w-[100vw] py-8 flex flex-col items-center bg-amber-100'>
             <div className='flex flex-row space-x-2'>
                 <button className='flex flex-row items-center space-x-2' onClick={()=> router.back()}>
-                        {/* <FontAwesomeIcon
+                        <FontAwesomeIcon
                             icon={faArrowLeft}
                             style={{ fontSize: 30,color: "orange" }}
-                        />  */}
-                        <p>leftarrow</p>
-                        {/* <p className='text-2xl font-bold py-2 items-center '>Back</p> */}
+                        /> 
+                        
                     </button>
                 <p className='text-xl font-bold text-black my-5 '>Update Vacancy</p>
             </div>

@@ -56,7 +56,7 @@ export default function viewSingleJob(pageProp:AppProps['pageProps']){
             {isLoading ? <Loader isLoading={isLoading}/>:
             <div className='px-10 py-10'>
                 <button className='flex flex-row items-center space-x-2' onClick={()=> router.back()}>
-                <p>leftarrow</p>
+                <FontAwesomeIcon icon={faArrowLeft} />
                     <p className='text-2xl font-bold py-2 items-center '>Back</p>
                 </button>
                 {serverError.length == 0 ?
