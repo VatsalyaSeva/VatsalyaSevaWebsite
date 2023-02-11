@@ -23,7 +23,7 @@ const upload = multer({
     }),
 });
 
-const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
+const apiRoute = nextConnect<NextApiRequest & {files:Express.Multer.File[]}, NextApiResponse>({
     // Handle any other HTTP method
     onNoMatch(req, res) {
         res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
@@ -50,8 +50,8 @@ apiRoute.post(async (req, res) => {
 
     let imageUrlList: Array<{ image: string }> = []
     let videoUrlList: Array<{ video: string }> = []
-
-    req.files.forEach((item: file) => {
+    let files = req.files
+    files.forEach((item: file) => {
         if (item.mimetype.startsWith('image/')) {
             imageUrlList.push({ image: `images/events/${item.filename}` })
         }
