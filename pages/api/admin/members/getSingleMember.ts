@@ -17,9 +17,9 @@ apiRoute.post(async (req, res) => {
     const { id } = req.query
 
     if (typeof (id) == 'string') {
-        const member = await prisma.members.findFirst({
+        const member = await prisma.member.findFirst({
             where: {
-                id: parseInt(id)
+                id: id
             }
         })
         if (member) {

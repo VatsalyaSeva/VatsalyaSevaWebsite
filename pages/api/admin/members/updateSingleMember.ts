@@ -1,3 +1,4 @@
+import { Member } from './../../../../node_modules/.prisma/client/index.d';
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs-extra'
@@ -16,7 +17,7 @@ const upload = multer({
     }),
 });
 
-const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
+const apiRoute = nextConnect<NextApiRequest & {files:Express.Multer.File[]}, NextApiResponse>({
     // Handle any other HTTP method
     onNoMatch(req, res) {
         res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
@@ -32,21 +33,21 @@ type file = {
     mimetype: string
 }
 
-apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { memberName, phoneNumber, email, role } = req.body
+apiRoute.post(async (req: NextApiRequest  & {files:Express.Multer.File[]}, res: NextApiResponse) => {
+    const { memberName , phoneNumber, email, role }:Member & {memberName:string} = req.body
     const { id } = req.query
-    const file: file[] = req.files
+    const file = req.files
 
     if (typeof (id) == 'string') {
-        const member = await prisma.members.findFirst({
+        const member = await prisma.member.findFirst({
             where: {
-                id: parseInt(id)
+                id: id
             }
         })
         if (member) {
-            const updatedMember = await prisma.members.update({
+            const updatedMember = await prisma.member.update({
                 where: {
-                    id: parseInt(id)
+                    id: id
                 },
                 data: {
                     name: memberName != undefined ? memberName : member.name,

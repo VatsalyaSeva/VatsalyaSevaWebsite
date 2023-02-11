@@ -15,7 +15,7 @@ const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
 
 apiRoute.post(async (req, res) => {
 
-    const members = await prisma.members.findMany({})
+    const members = await prisma.member.findMany({})
     res.status(200).json({
         code: 200,
         data: members

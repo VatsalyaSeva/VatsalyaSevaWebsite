@@ -17,9 +17,9 @@ apiRoute.post(async (req, res) => {
     const { id } = req.query
 
     if (typeof (id) == 'string') {
-        const member = await prisma.members.delete({
+        const member = await prisma.member.delete({
             where: {
-                id: parseInt(id)
+                id: id
             }
         })
         if (member) {

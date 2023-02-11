@@ -1,3 +1,4 @@
+
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs-extra'
@@ -16,7 +17,7 @@ const upload = multer({
     }),
 });
 
-const apiRoute = nextConnect<NextApiRequest, NextApiResponse>({
+const apiRoute = nextConnect<NextApiRequest & {files:Express.Multer.File[]}, NextApiResponse>({
     // Handle any other HTTP method
     onNoMatch(req, res) {
         res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
