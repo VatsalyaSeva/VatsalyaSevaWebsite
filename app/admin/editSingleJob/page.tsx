@@ -4,8 +4,8 @@ import CreateJobs from '../createJobs'
 import { useRouter } from 'next/navigation'
 import { Vacancy } from '@prisma/client'
 import { AppProps } from 'next/app'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 export default function EditJob(pageProp:AppProps['pageProps']){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)

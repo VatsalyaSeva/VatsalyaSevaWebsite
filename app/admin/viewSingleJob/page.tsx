@@ -3,8 +3,8 @@ import { Vacancy,Applecants } from '@prisma/client';
 import { SingleJobComponent } from './singleJobComponent'
 import React,{ useState,useEffect, useCallback } from 'react';
 import { Loader } from './loader'
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { GetServerSideProps } from 'next';
 import { AppProps } from 'next/app';
