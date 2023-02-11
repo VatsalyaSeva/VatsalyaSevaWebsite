@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from 'react'
 import UserLayout from '../../userLayout'
 import { useRouter } from 'next/navigation';
-import { Vacancy } from '@prisma/client';
-export default function events({params}) {
+import { Vacancy,Events,Image,Video } from '@prisma/client';
+import { AppProps } from 'next/app';
+export default function events(pageProps:AppProps['pageProps']) {
+    type SingleEventType =  Events & {imagesUrl: Image[];videoUrl: Video[];}
 
-    const [singleEvent,setSingleEvent] = useState({})
+    const [singleEvent,setSingleEvent] = useState<SingleEventType>({} as SingleEventType)
     const [isLoading,setIsLoading] = useState(false)
 
     const getSingleEvent = () =>{
         setIsLoading(true)
-        fetch(`/api/user/getSingleEvent?id=${params.id}`, {
+        fetch(`/api/user/getSingleEvent?id=${pageProps.params.id}`, {
             method: 'GET'
         }).then(res => res.json()).then(data => {
             if (data.status == 200) {

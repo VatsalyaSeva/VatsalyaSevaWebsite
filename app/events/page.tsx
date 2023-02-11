@@ -1,19 +1,20 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import UserLayout from '../userLayout'
-import { Events } from '@prisma/client'
+import { Events,Image,Video } from '@prisma/client'
 import moment from 'moment'
 
 export default function events() {
-    const [eventsList, setEvensList] = useState<Events[]>([])
+    type SingleEventType =  Events & {imagesUrl: Image[];videoUrl: Video[];isUpcoming:boolean}
+    const [eventsList, setEvensList] = useState<SingleEventType[]>([])
 
     useEffect(() => {
         fetch('api/admin/getAllEvents', {
             method: 'GET'
-        }).then(res => res.json()).then(data => {
+        }).then(res => res.json()).then((data) => {
             if (data.status == 200) {
                 let today = moment(new Date())
-                setEvensList(data.data.map((item, index) => {
+                setEvensList(data.data.map((item:SingleEventType, index:number) => {
                     if (moment(data.data[0].date).isAfter(today)) {
                         return { ...item, isUpcoming: true }
                     }
