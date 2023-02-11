@@ -40,7 +40,7 @@ export default function viewSingleJob(pageProp){
         })
     },[])
     const getAllApplicants = useCallback(()=>{
-        fetch(`/api/admin/applicants/getAllApplicant?id=${searchParams.id}`,{method:'GET'}).then(res=> res.json()).then(data=>{
+        fetch(`/api/admin/applicants/getAllApplicant?id=${pageProp.searchParams.id}`,{method:'GET'}).then(res=> res.json()).then(data=>{
             if(data.code == 200){
                 setAllApplicant(data.data)
             }

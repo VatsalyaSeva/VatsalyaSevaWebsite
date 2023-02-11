@@ -50,7 +50,7 @@ export default function CreateEvent({ setPage, setNav }: props) {
     }
 
     return (
-        <div className=' '>
+        <div className=''>
             <form
                 // encType='mu'
                 className='flex flex-col'
@@ -85,7 +85,15 @@ export default function CreateEvent({ setPage, setNav }: props) {
                     accept='image/*'
                     multiple
                     onChange={(e) => {
-                        setEventImage(e.target.files)
+                        let files = e.target.files
+                        if (files) {
+                            const fileArray = Array.from(files);
+                            let blobs = fileArray.map(file => {
+                              const blob = new Blob([file]);
+                              return blob
+                            });
+                            setEventImage(blobs)
+                        }
                     }}
                 />
                 <input
@@ -96,7 +104,15 @@ export default function CreateEvent({ setPage, setNav }: props) {
                     accept='video/*'
                     multiple
                     onChange={(e) => {
-                        setEventVideo(e.target.files)
+                        let files = e.target.files
+                        if (files) {
+                            const fileArray = Array.from(files);
+                            let blobs = fileArray.map(file => {
+                              const blob = new Blob([file]);
+                              return blob
+                            });
+                            setEventVideo(blobs)
+                        }
                     }}
                 />
                 <button

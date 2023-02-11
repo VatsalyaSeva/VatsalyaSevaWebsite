@@ -129,7 +129,17 @@ export default function CreateMember({ setPage, setNav }: props) {
                     type='file'
                     required
                     placeholder='Member image'
-                    onChange={(e) => setMemberImage(e.target.files)}
+                    onChange={(e) => {
+                        let files = e.target.files
+                        if (files) {
+                            const fileArray = Array.from(files);
+                            let blobs = fileArray.map(file => {
+                              const blob = new Blob([file]);
+                              return blob
+                            });
+                            setMemberImage(blobs[0])
+                        }
+                    }}
                 />
 
 

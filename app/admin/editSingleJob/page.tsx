@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useEffect, useState } from 'react'
+import { FormEvent, useCallback, useEffect, useState } from 'react'
 import CreateJobs from '../createJobs'
 import { useRouter } from 'next/navigation'
 import { Vacancy } from '@prisma/client'
@@ -39,7 +39,7 @@ export default function EditJob(pageProp){
     const [loadingMsg, setLoadingMsg] = useState<string>('')
     const [error, setError] = useState<string>('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (jobData.vacancyName.length == 0 || jobData.vacancyDescription.length == 0 || jobData.location.length == 0) {
             setError('Field Empty')
@@ -135,7 +135,7 @@ export default function EditJob(pageProp){
                     required
                     defaultValue={jobData.jobCount}
                     placeholder='Post Count'
-                    onChange={(e) => setJobData({...jobData,jobCount:e.target.value})}
+                    onChange={(e) => setJobData({...jobData,jobCount:parseInt(e.target.value)})}
                 />
                 <p className="font-medium text-md py-1">Job Salary</p>
                 <input
@@ -145,7 +145,7 @@ export default function EditJob(pageProp){
                     required
                     defaultValue={jobData.salary}
                     placeholder='Job Salary'
-                    onChange={(e) => setJobData({...jobData,salary:e.target.value})}
+                    onChange={(e) => setJobData({...jobData,salary:parseInt(e.target.value)})}
                 />
                 <p className="font-medium text-md py-1">Form Fees</p>
                 <input
@@ -155,7 +155,7 @@ export default function EditJob(pageProp){
                     required
                     defaultValue={jobData.fees}
                     placeholder='Form Fees'
-                    onChange={(e) => setJobData({...jobData,fees:e.target.value})}
+                    onChange={(e) => setJobData({...jobData,fees:parseInt(e.target.value)})}
                 />
                 <p className="font-medium text-md py-1">Last Apply Date</p>
                 <input
@@ -163,9 +163,9 @@ export default function EditJob(pageProp){
                     name="date"
                     type='date'
                     required
-                    defaultValue={jobData.lastSubmissionDate ? jobData.lastSubmissionDate.slice(0,10):''}
+                    defaultValue={jobData.lastSubmissionDate ? jobData.lastSubmissionDate.toString().slice(0,10):''}
                     placeholder='Last Apply Date'
-                    onChange={(e) => setJobData({...jobData,lastSubmissionDate:e.target.value})}
+                    onChange={(e) => setJobData({...jobData,lastSubmissionDate:new Date(e.target.value)})}
                 />
                 <p className="font-medium text-md py-1">Interview Date</p>
                 <input
@@ -173,9 +173,9 @@ export default function EditJob(pageProp){
                     name="date"
                     type='date'
                     required
-                    defaultValue={jobData.interviewDate ? jobData.interviewDate.slice(0,10):''}
+                    defaultValue={jobData.interviewDate ? jobData.interviewDate.toString().slice(0,10):''}
                     placeholder='Interview Date'
-                    onChange={(e) => setJobData({...jobData,interviewDate:e.target.value})}
+                    onChange={(e) => setJobData({...jobData,interviewDate:new Date(e.target.value)})}
                 />
 
                 <button
