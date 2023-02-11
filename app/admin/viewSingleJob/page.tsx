@@ -7,9 +7,10 @@ import { Loader } from './loader'
 // import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import { GetServerSideProps } from 'next';
+import { AppProps } from 'next/app';
 
 
-export default function viewSingleJob(pageProp){
+export default function viewSingleJob(pageProp:AppProps['pageProps']){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)
     const [allApplicant,setAllApplicant] = useState<Applecants[]>([])
     const [isLoading,setIsLoading] = useState<boolean>(false)

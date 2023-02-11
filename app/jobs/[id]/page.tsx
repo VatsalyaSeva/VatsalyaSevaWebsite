@@ -4,9 +4,9 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import UserLayout from '../../userLayout'
 import { useRouter } from 'next/navigation';
 import { Vacancy } from '@prisma/client';
+import type { AppProps } from 'next/app'
 
-
-const fetchJobData = async (id:string,callback:(data)=> void)=>{
+const fetchJobData = async (id:string,callback:(data: any)=> void)=>{
     let res = await fetch(`/api/admin/jobs/getSingleJob?id=${id}`,{
         method:"GET"
     })
@@ -16,12 +16,12 @@ const fetchJobData = async (id:string,callback:(data)=> void)=>{
     }
 }
 
-export default function jobs(pageProp) {
+export default function jobs(pageProp:AppProps['pageProps']) {
     const route = useRouter()
     const [name, setName] = useState<string>('')
     const [phone, setPhone] = useState<string>('')
     const [email, setEmail] = useState<string>('')
-    const [cvFile, setCvFile] = useState<FileList>({})    //   phone      String
+    const [cvFile, setCvFile] = useState<Blob>({} as Blob)    //   phone      String
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const [serverError, setServerError] = useState<string>('')
@@ -39,7 +39,7 @@ export default function jobs(pageProp) {
         formData.append('name', name)
         formData.append('phone', phone)
         formData.append('email', email)
-        formData.append('cvFilePath', cvFile[0])
+        formData.append('cvFilePath', cvFile)
 
         fetch('/api/user/saveJobApplication', {
             method: 'POST',
@@ -89,7 +89,17 @@ export default function jobs(pageProp) {
                                 <input className='mb-3 bg-white rounded-md px-3 py-2 placeholder:text-gray-600 text-sm border border-amber-600 '
                                     type={'file'}
                                     name='cv'
-                                    onChange={(e) => setCvFile(e.target.files)}
+                                    onChange={(e) => {
+                                        let files = e.target.files
+                                        if(files){
+                                            let ArrayFiles = Array.from(files)
+                                            let blobs = ArrayFiles.map((file)=> {
+                                                let blob = new Blob([file])
+                                                return blob
+                                            })
+                                            setCvFile(blobs[0])
+                                        }
+                                    }}
                                     placeholder='upload CV'
                                     accept='application/pdf' />
                                 <button className='px-4 py-1 rounded-md bg-amber-600 w-full text-white mt-2' type='submit'>Apply</button>
