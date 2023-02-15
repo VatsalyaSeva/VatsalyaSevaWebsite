@@ -1,22 +1,19 @@
 "use client"
 
 import React, { FormEvent, useEffect, useState } from 'react'
-import UserLayout from '../userLayout'
+import UserLayout from '../../components/userLayout'
 import { useRouter } from 'next/navigation';
 import { Vacancy } from '@prisma/client';
 import type { AppProps } from 'next/app'
+import { api } from '../../utils/api';
 
-const fetchJobData = async (id:string,callback:(data: any)=> void)=>{
-    let res = await fetch(`/api/admin/jobs/getSingleJob?id=${id}`,{
-        method:"GET"
-    })
-    let data = await res.json()
-    if(data.code == 200){
-        callback(data.data)
-    }
+
+jobs.getInitialProps = async (ctx) => {
+    return { id:ctx.query.id }
 }
 
 export default function jobs(pageProp:AppProps['pageProps']) {
+    
     const route = useRouter()
     const [name, setName] = useState<string>('')
     const [phone, setPhone] = useState<string>('')
@@ -27,15 +24,19 @@ export default function jobs(pageProp:AppProps['pageProps']) {
     const [serverError, setServerError] = useState<string>('')
     const [data,setData] = useState<Vacancy>({} as Vacancy)
 
-    useEffect(()=>{
-        fetchJobData(pageProp.params.id,setData)
-    },[])
+    const getSingleJob = api.vacancy.getById.useQuery({id:pageProp.id})
+
+    useEffect(() => {
+        if(getSingleJob.isSuccess){
+           setData(getSingleJob.data)
+        }
+    }, [getSingleJob.data])
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsLoading(true)
         const formData = new FormData()
-        formData.append('id', pageProp.params.id)
+        formData.append('id', pageProp.id)
         formData.append('name', name)
         formData.append('phone', phone)
         formData.append('email', email)

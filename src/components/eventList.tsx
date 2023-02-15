@@ -1,5 +1,6 @@
 import { Events } from '@prisma/client'
 import { useEffect, useState } from 'react'
+import { api } from '../utils/api'
 
 type props = {
     setPage: (page: string) => void,
@@ -8,16 +9,13 @@ type props = {
 
 export default function EventList({ setPage, setNav }: props) {
     const [eventsList, setEvensList] = useState<Events[]>([])
-
-    useEffect(() => {
-        fetch('api/admin/getAllEvents', {
-            method: 'GET'
-        }).then(res => res.json()).then(data => {
-            if (data.status == 200) {
-                setEvensList(data.data)
-            }
-        })
-    }, [])
+    const getAllEvent = api.event.getAll.useQuery()
+    
+    useEffect(()=>{
+        if(getAllEvent.isSuccess){
+            setEvensList(getAllEvent.data)
+        }
+    },[getAllEvent.data])
 
     return (
         <div className="w-[70vw] h-[100vh]">

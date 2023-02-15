@@ -2,7 +2,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs-extra'
-import prisma from '../../../../prisma'
+import { prisma } from '../../../../server/db'
 
 import nextConnect from 'next-connect';
 import multer from 'multer';

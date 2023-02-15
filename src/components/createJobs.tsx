@@ -1,4 +1,7 @@
-import React,{ useState, FC, FormEvent } from "react"
+import dynamic from "next/dynamic";
+import React,{ useState, FC, FormEvent, useEffect } from "react"
+
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), { ssr: false });
 
 let nav = {
     Events: 'Events',
@@ -21,6 +24,8 @@ type props = {
 }
 
 export default function CreateJobs({ setPage, setNav }: props) {
+
+
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [jobCount, setJobCount] = useState<string>('0')
@@ -42,7 +47,7 @@ export default function CreateJobs({ setPage, setNav }: props) {
         else {
             setIsLoading(true)
             setLoadingMsg('Wait, Adding New Record..')
-            fetch('/api/admin/saveNewJob', {
+            fetch('/api/admin/vaccancy/saveNewJob', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -97,14 +102,9 @@ export default function CreateJobs({ setPage, setNav }: props) {
                     onChange={(e) => setName(e.target.value)}
                 />
                 <p className="font-medium text-md py-1">Job description</p>
-                <textarea
-                    className='mb-3 bg-white rounded-md px-3 py-2 placeholder:text-gray-600 text-sm border border-amber-600'
-                    name="name"
-                    rows={8}
-                    required
-                    placeholder='Job description'
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+                
+                <RichTextEditor onChange={setDescription} value={''}/>
+                
                 <p className="font-medium text-md py-1">Job location</p>
                 <input
                     className='mb-3 bg-white rounded-md px-3 py-2 placeholder:text-gray-600 text-sm border border-amber-600'
@@ -159,6 +159,7 @@ export default function CreateJobs({ setPage, setNav }: props) {
                     placeholder='Interview Date'
                     onChange={(e) => setInterviewDate(e.target.value)}
                 />
+                
 
                 <button
                     type='submit'

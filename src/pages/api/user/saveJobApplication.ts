@@ -1,19 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs-extra'
-import prisma from '../../../prisma'
+import { prisma } from '../../../server/db'
 
 import nextConnect from 'next-connect';
 import multer from 'multer';
-
-import { Prisma, Applecants } from '@prisma/client'
-import path from 'path'
 
 
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => { cb(null, './public/pdfs/jobs') },
-        filename: (req, file, cb) => cb(null, `${req.body.name.slice(0, 5)}_${file.originalname}`),
+        filename: (req, file, cb) => cb(null, `Resume_${req.body.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`),
     }),
 });
 
@@ -36,10 +33,8 @@ apiRoute.post(async (req, res) => {
     }
 
     const existingUser = await prisma.applecants.findFirst({
-        where: { email: email, phone: phone, vacancyId: parseInt(id) },
+        where: { email: email, phone: phone, vacancyId: id },
     });
-
-    console.log('existingUser', existingUser)
 
     if (existingUser) {
         res.status(400).json({
@@ -49,7 +44,7 @@ apiRoute.post(async (req, res) => {
         })
     }
     else {
-        let cvFilePath = `pdfs/jobs/${req.files[0].filename}`
+        let cvFilePath = `pdfs/jobs/Resume_${req.body.name.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`
 
         const newApplicant = await prisma.applecants.create({
             data: {
@@ -60,7 +55,7 @@ apiRoute.post(async (req, res) => {
                 createdAt: new Date(),
                 vacancy: {
                     connect: {
-                        id: parseInt(id)
+                        id: id
                     }
                 }
             }

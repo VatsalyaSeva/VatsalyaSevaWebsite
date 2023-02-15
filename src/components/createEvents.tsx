@@ -1,11 +1,13 @@
 import { FormEvent, useState } from 'react'
 
+
 type props = {
     setPage: (page: string) => void,
     setNav: (nav: string) => void
 }
 
 export default function CreateEvent({ setPage, setNav }: props) {
+    
 
     const [eventName, setEventName] = useState<string>('')
     const [eventDate, setEventDate] = useState<string>('')
@@ -30,7 +32,7 @@ export default function CreateEvent({ setPage, setNav }: props) {
         }
 
         setError('sending')
-        fetch('/api/admin/saveNewEvent', {
+        fetch('/api/admin/events/saveNewEvent', {
             method: 'POST',
             headers: { 'Access-Control-Allow-Headers': '*' },
             body: formData
@@ -87,12 +89,12 @@ export default function CreateEvent({ setPage, setNav }: props) {
                     onChange={(e) => {
                         let files = e.target.files
                         if (files) {
-                            const fileArray = Array.from(files);
-                            let blobs = fileArray.map(file => {
-                              const blob = new Blob([file]);
-                              return blob
-                            });
-                            setEventImage(blobs)
+                            // const fileArray = Array.from(files);
+                            // let blobs = fileArray.map(file => {
+                            //   const blob = new Blob([file]);
+                            //   return blob
+                            // });
+                            setEventImage(files)
                         }
                     }}
                 />

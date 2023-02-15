@@ -4,7 +4,7 @@ import Slider from '../components/slider'
 import { type NextPage } from "next";
 import UserLayout from '../components/userLayout'
 import { useRouter } from 'next/navigation'
-import { Events, Vacancy,Image,Video } from '@prisma/client'
+import { Events, Vacancy } from '@prisma/client'
 import moment from 'moment'
 import Link from 'next/link'
 import { api } from "../utils/api";
@@ -14,13 +14,21 @@ const Home:NextPage = ()=> {
 
     const [eventsList, setEvensList] = useState<typeof getEvent['data']>([])
     const [jobList, setJobList] = useState<Vacancy[]>([])
-    const getEvent = api.event.getAll.useQuery()
+    // const getEvent = api.event.getAll.useQuery()
+
+    // useEffect(()=>{
+    //     if(getEvent.isSuccess){
+    //         setEvensList(getEvent.data)
+    //     }
+    // },[getEvent.data])
+
+    const getVacancyList = api.vacancy.getAll.useQuery()
 
     useEffect(()=>{
-        if(getEvent.isSuccess){
-            setEvensList(getEvent.data)
+        if(getVacancyList.isSuccess){
+            setJobList(getVacancyList.data)
         }
-    },[getEvent.data])
+    },[getVacancyList.data])
 
     return (
         <UserLayout>

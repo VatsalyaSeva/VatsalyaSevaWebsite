@@ -16,7 +16,7 @@ const upload = multer({
                 cb(null, './public/images/events');
             }
         },
-        filename: (req, file, cb) => cb(null, `${req.body.eventName.slice(0, 5)}_${file.originalname}`),
+        filename: (req, file, cb) => cb(null, `Event_${req.body.eventName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}_${file.originalname}`),
     }),
 });
 
@@ -49,11 +49,12 @@ apiRoute.post(async (req, res) => {
     let videoUrlList: Array<{ video: string }> = []
     let files = req.files
     files.forEach((item: file) => {
+        console.log(item.mimetype)
         if (item.mimetype.startsWith('image/')) {
-            imageUrlList.push({ image: `images/events/${item.filename}` })
+            imageUrlList.push({ image: `images/events/Event_${req.body.eventName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}_${item.originalname}`})
         }
         else if (item.mimetype.startsWith('video/')) {
-            videoUrlList.push({ video: `videos/events/${item.filename}` })
+            videoUrlList.push({ video: `videos/events/Event_${req.body.eventName.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}_${item.originalname}` })
         }
     })
 
@@ -79,7 +80,7 @@ apiRoute.post(async (req, res) => {
         }
     })
 
-    console.log('newEvent', newEvent)
+    // console.log('newEvent', newEvent)
 
     res.status(200).json({
         status: '200',

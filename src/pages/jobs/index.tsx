@@ -1,24 +1,23 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import UserLayout from '../userLayout'
+import UserLayout from '../../components/userLayout'
 import { Vacancy } from '@prisma/client';
 import { useRouter } from 'next/navigation'
+import { api } from '../../utils/api';
+
 
 export default function jobs() {
     const [jobList, setJobList] = useState<Vacancy[]>([])
     const router = useRouter()
+    const getAllJobs = api.vacancy.getAll.useQuery()
+
     useEffect(() => {
-
-        fetch('api/admin/getAllJobs', {
-            method: 'GET'
-        }).then(res => res.json()).then(data => {
-            if (data.status == 200) {
-                setJobList(data.data)
-
-            }
-        })
-    }, [])
+        if(getAllJobs.isSuccess){
+            setJobList(getAllJobs.data)
+        }
+    }, [getAllJobs.data])
+    
     return (
         <UserLayout>
             <div className=' w-full flex flex-row space-x-4 py-5 flex-wrap justify-center'>

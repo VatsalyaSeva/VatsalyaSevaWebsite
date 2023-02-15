@@ -1,13 +1,13 @@
 "use client"
-
+import fs from 'fs-extra'
 import React, { use, useEffect, useState } from 'react'
 import Applicants from '../../components/applicants'
-import CreateEvent from './createEvents'
-import CreateJobs from './createJobs'
-import DonationList from './donationList'
-import EventList from './eventList'
+import CreateEvent from '../../components/createEvents'
+import CreateJobs from '../../components/createJobs'
+import DonationList from '../../components/donationList'
+import EventList from '../../components/eventList'
 import JobList from '../../components/jobList'
-import CreateMember from './createMember'
+import CreateMember from '../../components/createMember'
 
 export default function admin() {
     let nav = {
