@@ -11,16 +11,12 @@ import { api } from "../utils/api";
 
 const Home:NextPage = ()=> {
     const router = useRouter()
-
-    const [eventsList, setEvensList] = useState<typeof getEvent['data']>([])
+    
+    const [eventsList, setEvensList] = useState<Event[]>([])
     const [jobList, setJobList] = useState<Vacancy[]>([])
     // const getEvent = api.event.getAll.useQuery()
 
-    // useEffect(()=>{
-    //     if(getEvent.isSuccess){
-    //         setEvensList(getEvent.data)
-    //     }
-    // },[getEvent.data])
+    
 
     const getVacancyList = api.vacancy.getAll.useQuery()
 
@@ -52,7 +48,7 @@ const Home:NextPage = ()=> {
                     </div>
                 </div>
                 <div className=' w-full px-5 py-5'>
-                <div>
+                {/* <div>
                     <p className='font-bold text-xl text-black py-3'>All Events</p>
                     <div className='grid grid-cols-5'>
                         {eventsList.map((item, index) => {
@@ -66,7 +62,7 @@ const Home:NextPage = ()=> {
                         })}
 
                     </div>
-                </div>
+                </div> */}
                 <div className='mt-8'>
                     <p className='font-bold text-xl text-black py-1'>All Vacancy</p>
                     <div className='flex flex-row space-x-5'>

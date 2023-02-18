@@ -1,18 +1,24 @@
-import { Events } from '@prisma/client'
+import { AdditionalImages, AdditionalVideos, Events, Organizers, Performer, SpecialGuest } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import { api } from '../../../utils/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
 
-type props = {
-    setPage: (page: string) => void,
-    setNav: (nav: string) => void
-}
+type EventType = 
+    Events & {
+        organizers: Organizers[];
+        additionalImages: AdditionalImages[];
+        additionalVideos: AdditionalVideos[];
+        specialGuests: SpecialGuest[];
+        performers: Performer[];
+    }
 
-export default function EventList({ setPage, setNav }: props) {
-    const [eventsList, setEvensList] = useState<Events[]>([])
+
+export default function EventList() {
+    const [eventsList, setEvensList] = useState<EventType[]>([])
     const getAllEvent = api.event.getAll.useQuery()
+    const deleteEvent = api.event.deleteEventById.useMutation()
     const router = useRouter()
     
     useEffect(()=>{
@@ -20,6 +26,12 @@ export default function EventList({ setPage, setNav }: props) {
             setEvensList(getAllEvent.data)
         }
     },[getAllEvent.data])
+
+    useEffect(()=>{
+        if(deleteEvent.isSuccess){
+            setEvensList(eventsList.filter((item)=> item.id != deleteEvent.data.id))
+        }
+    },[deleteEvent.data])
 
     return (
         <div className="container w-[100vw] h-min-[100vh] px-8 py-5">
@@ -58,7 +70,13 @@ export default function EventList({ setPage, setNav }: props) {
                                             onClick={()=> router.push(`/admin/event/editSingleEvent/${item.id}`)}
                                         >Edit</button>
                                         <button
-                                            onClick={() => {}}
+                                            onClick={() => {
+                                                deleteEvent.mutate({
+                                                    id:item.id,
+                                                    coverImage:item.coverImage,
+                                                    additionalImages:item.additionalImages.map((item)=> item.image)
+                                                })
+                                            }}
                                             className="bg-red-500 text-sm md:text-md text-white px-3 py-1 rounded-lg">Delete
                                         </button>
                                     </div>

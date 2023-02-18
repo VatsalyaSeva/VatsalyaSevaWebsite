@@ -14,6 +14,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@prisma/client": "^4.9.0",
+    "@sanity/client": "^5.2.1",
     "@tanstack/react-query": "^4.20.0",
     "@trpc/client": "^10.9.0",
     "@trpc/next": "^10.9.0",
@@ -30,7 +31,9 @@
     "draft-js-inline-toolbar-plugin": "^3.0.1",
     "draft-js-plugins-editor": "^3.0.0",
     "draft-js-static-toolbar-plugin": "^3.0.1",
+    "fs": "^0.0.1-security",
     "fs-extra": "^11.1.0",
+    "lottie-react": "^2.3.1",
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
     "next": "13.1.6",
@@ -41,6 +44,7 @@
     "react-overlays": "^5.2.1",
     "react-rte": "^0.16.5",
     "superjson": "1.9.1",
+    "use-file-picker": "^1.5.2",
     "zod": "^3.20.2"
   },
   "devDependencies": {

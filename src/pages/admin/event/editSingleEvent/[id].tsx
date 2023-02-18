@@ -10,7 +10,7 @@ type props = {
     id:string
 }
 
-CreateEvent.getInitialProps = async (ctx) => {
+CreateEvent.getInitialProps = async (ctx: { query: { id: any } }) => {
     return { id:ctx.query.id }
 }
 
@@ -45,10 +45,12 @@ export default function CreateEvent({ id }:props) {
     const handleSubmit = () => {
         updateEventRequest.mutate({
             id:id,
-            name:eventName,
-            location:eventLocation,
-            dateTime:new Date(eventDateTime).toISOString(),
-            description:eventDescription
+            update:{
+                name:eventName,
+                location:eventLocation,
+                dateTime:new Date(eventDateTime).toISOString(),
+                description:eventDescription
+            }
         })
     }
 

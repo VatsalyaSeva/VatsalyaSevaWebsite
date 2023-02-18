@@ -19,55 +19,62 @@ model adminUser {
     unlockCode String
 }
 
-model Donater {
-    id          String     @id @default(cuid())
-    name        String
-    countryCode String
-    phone       String     @unique
-    email       String     @unique
-    address     String
-    postalCode  String
-    password    String
-    Donation    Donation[]
-    createdAt   DateTime
+model Donator {
+    id            String     @id @default(cuid())
+    name          String
+    countryCode   String
+    phone         String     @unique
+    email         String     @unique
+    address       String?
+    postalCode    String?
+    totalDonation Int
+    passwordHash  String
+    donations     Donation[]
+    createdAt     DateTime   @default(now())
+
+    @@index([email])
 }
 
 model Donation {
     id            String   @id @default(cuid())
     donaterId     String
     amount        Int
-    country       String
-    transactionId String
+    transactionId String?
     status        Boolean  @default(false)
-    donater       Donater  @relation(fields: [donaterId], references: [id])
-    createAt      DateTime @updatedAt
+    donater       Donator  @relation(fields: [donaterId], references: [id])
+    createdAt     DateTime @default(now())
 
     @@index([donaterId])
 }
 
 model Vacancy {
-    id                 String       @id @default(cuid())
+    id                 String      @id @default(cuid())
     vacancyName        String
-    vacancyDescription String       @db.Text()
+    vacancyDescription String      @db.Text()
     jobCount           Int
     salary             Int
     fees               Int
-    applecants         Applecants[]
-    lastSubmissionDate DateTime
-    interviewDate      DateTime
+    applecants         Applicant[]
+    lastSubmissionDate String
+    interviewDate      String
     location           String
-    createdAt          DateTime     @updatedAt
+    qrCodePath         String?
+    qrCodePathUrl      String?
+    createdAt          DateTime    @updatedAt
 }
 
-model Applecants {
-    id         String   @id @default(cuid())
-    name       String
-    phone      String
-    email      String
-    cvFilePath String
-    vacancyId  String
-    vacancy    Vacancy  @relation(fields: [vacancyId], references: [id])
-    createdAt  DateTime @updatedAt
+model Applicant {
+    id            String   @id @default(cuid())
+    name          String
+    phone         String
+    email         String
+    cvFilePath    String
+    cvFilePathUrl String
+    transactionId String
+    upiId         String
+    vacancyId     String
+    vacancy       Vacancy  @relation(fields: [vacancyId], references: [id])
+    createdAt     DateTime @updatedAt
 
     @@index([vacancyId])
 }
@@ -79,6 +86,7 @@ model Events {
     dateTime         String
     location         String
     coverImage       String?
+    coverImageUrl    String?
     additionalImages AdditionalImages[]
     additionalVideos AdditionalVideos[]
     organizers       Organizers[]
@@ -99,23 +107,25 @@ model Organizers {
 }
 
 model SpecialGuest {
-    id         String  @id @default(cuid())
-    name       String
-    profilePic String?
-    bio        String?
-    event      Events  @relation(fields: [eventId], references: [id])
-    eventId    String
+    id            String  @id @default(cuid())
+    name          String
+    profilePic    String?
+    profilePicUrl String?
+    bio           String?
+    event         Events  @relation(fields: [eventId], references: [id])
+    eventId       String
 
     @@index([eventId])
 }
 
 model Performer {
-    id         String  @id @default(cuid())
-    name       String
-    profilePic String?
-    bio        String?
-    event      Events  @relation(fields: [eventId], references: [id])
-    eventId    String
+    id            String  @id @default(cuid())
+    name          String
+    profilePic    String?
+    profilePicUrl String?
+    bio           String?
+    event         Events  @relation(fields: [eventId], references: [id])
+    eventId       String
 
     @@index([eventId])
 }
@@ -123,6 +133,7 @@ model Performer {
 model AdditionalImages {
     id       String @id @default(cuid())
     image    String
+    imageUrl String
     Events   Events @relation(fields: [eventsId], references: [id])
     eventsId String
 
@@ -132,6 +143,7 @@ model AdditionalImages {
 model AdditionalVideos {
     id       String @id @default(cuid())
     video    String
+    videoUrl String
     Events   Events @relation(fields: [eventsId], references: [id])
     eventsId String
 
@@ -139,13 +151,22 @@ model AdditionalVideos {
 }
 
 model Member {
-    id          String   @id @default(cuid())
-    name        String
-    email       String   @unique
-    phoneNumber String
-    address     String
-    membership  DateTime
-    profilePic  String?
-    role        String
-    updatedAt   DateTime @updatedAt
+    id            String   @id @default(cuid())
+    name          String
+    email         String   @unique
+    phoneNumber   String
+    address       String
+    membership    String
+    profilePic    String?
+    profilePicUrl String?
+    role          String
+    updatedAt     DateTime @updatedAt
+}
+
+model HomeImages {
+    id               String   @id @default(cuid())
+    imageSource      String
+    imageSourceUrl   String
+    imageDescription String?
+    updatedAt        DateTime @updatedAt
 }

@@ -1,104 +1,52 @@
-"use client"
-import fs from 'fs-extra'
+import { faCalendar, faCoins, faFile, faImage, faUser } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { use, useEffect, useState } from 'react'
-import Applicants from '../../components/applicants'
-import CreateEvent from '../../components/createEvents'
-import CreateJobs from '../../components/createJobs'
-import DonationList from '../../components/donationList'
-import EventList from '../../components/eventList'
-import JobList from '../../components/jobList'
-import CreateMember from '../../components/createMember'
+import { useRouter } from 'next/navigation'  
+import { api } from '../../utils/api'
+import { HomeImages } from '@prisma/client'
+import { FilePickerReturnTypes, useFilePicker } from 'use-file-picker'
+import { sanityClient } from '../../server/storage'
+import { basename } from 'path'
 
 export default function admin() {
-    let nav = {
-        Events: 'Events',
-        Jobs: 'Jobs',
-        Donations: 'Donations',
-        Members:'Members'
-    }
-
-    let pages = {
-        createEvent: 'createEvent',
-        eventList: 'eventList',
-        createJob: 'createJob',
-        jobList: 'jobList',
-        applicants: 'applicants',
-        donationList: 'donationList',
-        membersList:'membersList',
-        createMember:'createMember'
-    }
-
-    const [currentNav, setCurrentNav] = useState<string>('Events')
-    const [currentPage, setCurrentPage] = useState<string>('')
+    const router = useRouter()
 
     return (
-        <div className="container flex flex-row">
-            <div className="w-[15vw] min-w-[200px] h-[100%] rounded-br-xl shadow-xl bg-amber-700 py-5 px-5 ">
-                <p className='text-2xl font-bold text-white'>Admin Panel</p>
-                <div className='pt-10'>
-                <p
-                    onClick={() => setCurrentNav(nav.Members)}
-                    className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Members && 'font-bold text-xl'}`}>Members</p>
-                {currentNav == nav.Members &&
-                    <div>
-                        <p
-                            onClick={() => setCurrentPage(pages.createMember)}
-                            className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.createEvent && 'border-b border-amber-200'}`}>Create member</p>
-                        <p
-                            onClick={() => setCurrentPage(pages.membersList)}
-                            className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.eventList && 'border-b border-amber-200'}`}>Members List </p>
-                    </div>}
-                    <p
-                        onClick={() => setCurrentNav(nav.Events)}
-                        className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Events && 'font-bold text-xl'}`}>Events</p>
-                    {currentNav == nav.Events &&
-                        <div>
-                            <p
-                                onClick={() => setCurrentPage(pages.createEvent)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.createEvent && 'border-b border-amber-200'}`}>Create events</p>
-                            <p
-                                onClick={() => setCurrentPage(pages.eventList)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.eventList && 'border-b border-amber-200'}`}>Events List </p>
-                        </div>}
-                    <p
-                        onClick={() => setCurrentNav(nav.Jobs)}
-                        className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Jobs && 'font-bold text-xl'}`}>Jobs</p>
-                    {currentNav == nav.Jobs &&
-                        <div>
-                            <p
-                                onClick={() => setCurrentPage(pages.createJob)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.createJob && 'border-b border-amber-200'}`}>Create new</p>
-                            <p
-                                onClick={() => setCurrentPage(pages.jobList)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.jobList && 'border-b border-amber-200'}`}>Job List </p>
-                            {/* <p
-                                onClick={() => setCurrentPage(pages.applicants)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.applicants && 'border-b border-amber-200'}`}>Applicants</p> */}
-                        </div>}
-                    <p
-                        onClick={() => setCurrentNav(nav.Donations)}
-                        className={`py-2 text-lg  text-white hover:text-xl  cursor-pointer ${currentNav == nav.Donations && 'font-bold text-xl'}`}>Donations</p>
-                    {currentNav == nav.Donations &&
-                        <div>
-                            <p
-                                onClick={() => setCurrentPage(pages.donationList)}
-                                className={`py-2 text-sm ml-4 text-white cursor-pointer ${currentPage == pages.donationList && 'border-b border-amber-200'}`}>Donation List </p>
-                        </div>}
+        <div className="container grid grid-rows-[1fr_300px] h-min-[100vh] w-[100vw] place-content-center">
+            
+            <div>
+                <p className='text-xl my-2 font-medium'>Actions</p>
+                <div className='grid grid-cols-2 md:grid-cols-5 self-center gap-x-5 gap-y-5 place-content-center'>
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
+                    onClick={()=> router.replace('/admin/homeImages')}>
+                        <FontAwesomeIcon icon={faImage} fontSize={30} color={'white'}/>
+                        <p>Carousal</p>
+                    </div>
+                    
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
+                    onClick={()=> router.replace('/admin/member')}>
+                        <FontAwesomeIcon icon={faUser} fontSize={30} color={'white'}/>
+                        <p>Members</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                     onClick={()=> router.replace('/admin/job')}
+                    >
+                    <FontAwesomeIcon icon={faFile} fontSize={30} color={'white'}/>
+                        <p>Vacancy</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                     onClick={()=> router.replace('/admin/event')}
+                    >
+                    <FontAwesomeIcon icon={faCalendar} fontSize={30} color={'white'}/>
+                        <p>Events</p>
+                    </div>
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                     onClick={()=> router.replace('/admin/donation')}
+                    >
+                    <FontAwesomeIcon icon={faCoins} fontSize={30} color={'white'}/>
+                        <p>Donations</p>
+                    </div>
                 </div>
-            </div>
-            <div className='px-5 py-5 w-[85vw]  flex flex-col items-center justify-center'>
-                {currentPage == pages.createMember &&
-                    <CreateMember setPage={setCurrentPage} setNav={setCurrentNav} />}
-                {currentPage == pages.createEvent &&
-                    <CreateEvent setPage={setCurrentPage} setNav={setCurrentNav} />}
-                {currentPage == pages.createJob &&
-                    <CreateJobs setPage={setCurrentPage} setNav={setCurrentNav} />}
-                {currentPage == pages.donationList &&
-                    <DonationList setPage={setCurrentPage} setNav={setCurrentNav} />}
-                {currentPage == pages.eventList &&
-                    <EventList setPage={setCurrentPage} setNav={setCurrentNav} />}
-                {currentPage == pages.jobList &&
-                    <JobList setPage={setCurrentPage} setNav={setCurrentNav} />}
             </div>
         </div>
     )

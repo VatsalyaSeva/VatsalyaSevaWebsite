@@ -1,5 +1,5 @@
 "use client";
-import { Vacancy, Applecants, SpecialGuest, Performer, Member, Organizers } from "@prisma/client";
+import { Vacancy, SpecialGuest, Performer, Member, Organizers } from "@prisma/client";
 import { SingleJobComponent } from "../../../../components/singleJobComponent";
 import React, { useState, useEffect, useCallback } from "react";
 import { Loader } from "../../../../components/loader";
@@ -12,6 +12,7 @@ import { AppProps } from "next/app";
 import { api } from "../../../../utils/api";
 import moment from "moment";
 import Modal from "react-overlays/Modal";
+import { sanityClient } from "../../../../server/storage";
 
 let ModeType = {
   cover: "cover",
@@ -24,7 +25,7 @@ let ModeType = {
 
 type ModelKeys = keyof typeof ModeType;
 
-viewSingleEvent.getInitialProps = async (ctx) => {
+viewSingleEvent.getInitialProps = async (ctx: { query: { id: any; }; }) => {
   return { id: ctx.query.id };
 };
 
@@ -128,23 +129,16 @@ export default function viewSingleEvent(pageProp: AppProps["pageProps"]) {
             </div>
             {/* cover Image */}
             <div className="my-4 mx-4 md:mx-8 flex justify-center">
-              {eventData.coverImage != null ? (
+              {eventData.coverImageUrl != null ? (
                 <div className="relative">
                   <img
-                    src={eventData.coverImage}
+                    src={eventData.coverImageUrl}
                     alt=""
                     className="h-[50vh] w-[80vw] rounded-lg"
                   />
                   <div className="bottom-[10px] right-[10px] absolute z-[2px] space-x-2">
-                    <button className=" text-white bg-green-700 rounded-lg px-3 py-1 text-sm "
-                        onClick={()=> {
-                            setSelectedModelType(ModeType.cover)
-                            setModelVisibility(true)
-                            
-                        }}
-                    >Update</button>
                     <button className=" text-white bg-red-700 rounded-lg px-3 py-1 text-sm "
-                        onClick={()=> {removeCover.mutate({id:pageProp.id})}}
+                        onClick={()=> {removeCover.mutate({id:pageProp.id,coverImagePath:eventData.coverImage ? eventData.coverImage:''})}}
                     >Delete</button>
                   </div>
                 </div>
@@ -409,12 +403,12 @@ export default function viewSingleEvent(pageProp: AppProps["pageProps"]) {
                               return (
                                 <div key={index} className="relative">
                                   <img
-                                    src={`/${images.image}`}
+                                    src={images.imageUrl}
                                     alt=""
                                     className="h-full w-full rounded-lg"
                                   />
                                   <button className=" absolute z-[3px] top-[5px] right-[8px]"
-                                      onClick={()=> removeSingleImage.mutate({imageId:images.id})}
+                                      onClick={()=> removeSingleImage.mutate({imageId:images.id,imagePath:images.image})}
                                   >
                                       <FontAwesomeIcon icon={faTrash} color={'white'} fontSize={16}/>
                                   </button>
@@ -431,7 +425,7 @@ export default function viewSingleEvent(pageProp: AppProps["pageProps"]) {
               </div>
             </div>
             {/* videoEvent */}
-            <div className="my-4 mx-4 md:mx-8">
+            {/* <div className="my-4 mx-4 md:mx-8">
               <div className="flex items-center justify-between">
                 <p>Additional Event Videos</p>
                 <button
@@ -475,7 +469,7 @@ export default function viewSingleEvent(pageProp: AppProps["pageProps"]) {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
             <Modal
               style={{
                 top: 0,
@@ -593,30 +587,35 @@ type coverProp = {
 
 const UploadCoverView = ({ id, onSubmitSuccess,defaultCover }: coverProp) => {
   const [selectedImage, setSelectedImage] = useState<File | string>(defaultCover);
+  let addCover = api.event.addCoverImage.useMutation()
+
+  useEffect(()=>{
+    if(addCover.isSuccess){
+      onSubmitSuccess()
+    }
+  },[addCover.data])
+
   const handleCoverUpload = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    let body = new FormData();
-    body.append("id", id);
-    body.append("coverImage", selectedImage);
 
-    fetch("/api/admin/events/addEventCoverImage", {
-      method: "POST",
-      headers: { "Access-Control-Allow-Headers": "*" },
-      body: body,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code == 200) {
-          onSubmitSuccess();
-        }
-      });
+    if(typeof(selectedImage) != 'string'){
+      sanityClient.assets.upload('image',selectedImage,{
+        filename:`${selectedImage.name}`
+      }).then(data=>{
+        addCover.mutate({
+          id:id,
+          coverImagePath:data._id,
+          coverImagePathUrl:data.url
+        })
+      })
+    }
   };
   
   return (
     <div className="mt-5 flex  h-full w-full flex-col items-center justify-center">
       <div className="overflow-hidden rounded-xl">
           <img
-            src={typeof(selectedImage) == 'object' ? URL.createObjectURL(selectedImage):selectedImage}
+            src={typeof(selectedImage) == 'string' ? selectedImage:URL.createObjectURL(selectedImage)}
             alt=""
             className="h-[150px] w-[150px] md:h-[25vw] md:w-[50vw]"
           />
@@ -654,59 +653,58 @@ const UploadCoverView = ({ id, onSubmitSuccess,defaultCover }: coverProp) => {
 type additionImage = Pick<coverProp, 'id' | 'onSubmitSuccess'>
 
 const UploadAdditionalImage = ({id,onSubmitSuccess}:additionImage)=>{
-    const [selectedImage, setSelectedImage] = useState<File[]>([]);
-  const handleCoverUpload = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    let body = new FormData();
-    body.append("id", id);
-    selectedImage.forEach((item)=>{
-        body.append("additionalImage", item);
-    })
+    const [selectedImage, setSelectedImage] = useState<File>({} as File);
+    let addImages = api.event.addEventImage.useMutation()
 
-    fetch("/api/admin/events/addAdditionalImages", {
-      method: "POST",
-      headers: { "Access-Control-Allow-Headers": "*" },
-      body: body,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code == 200) {
-          onSubmitSuccess();
-        }
-      });
-  };
-  
-  return (
-    <div className="mt-5 flex  h-full w-full flex-col items-center justify-center">
-      <form
-        className="mt-4 grid grid-rows-2 gap-4"
-        onSubmit={handleCoverUpload}
-      >
-        <input
-          className=""
-          type="file"
-          name=""
-          multiple
-          placeholder="Select Cover Image"
-          onChange={(e) => {
-            if (e.target.files != null) {
-              if (e.target.files[0] != undefined) {
-                let files = Array.from(e.target.files)
-                setSelectedImage(files);
-              }
-            }
-          }}
-          accept="image/*"
-        />
-        {typeof(selectedImage) == 'object' && <button
-          className=" rounded-lg bg-green-500 px-3 py-1 text-white"
-          type="submit"
+    useEffect(()=>{
+      if(addImages.isSuccess){
+        onSubmitSuccess()
+      }
+    },[addImages.data])
+
+
+    const handleCoverUpload = (e: { preventDefault: () => void; }) => {
+      e.preventDefault();
+      sanityClient.assets.upload('image',selectedImage,{
+        filename:selectedImage.name
+      }).then(data=>{
+        addImages.mutate({
+          eventId:id,
+          imagePath:data._id,
+          imagePathUri:data.url
+        })
+      })
+    };
+    
+    return (
+      <div className="mt-5 flex  h-full w-full flex-col items-center justify-center">
+        <form
+          className="mt-4 grid grid-rows-2 gap-4"
+          onSubmit={handleCoverUpload}
         >
-          Upload
-        </button>}
-      </form>
-    </div>
-  );
+          <input
+            className=""
+            type="file"
+            name=""
+            placeholder="Select Cover Image"
+            onChange={(e) => {
+              if (e.target.files != null) {
+                if (e.target.files[0] != undefined) {
+                  setSelectedImage(e.target.files[0]);
+                }
+              }
+            }}
+            accept="image/*"
+          />
+          {typeof(selectedImage) == 'object' && <button
+            className=" rounded-lg bg-green-500 px-3 py-1 text-white"
+            type="submit"
+          >
+            Upload
+          </button>}
+        </form>
+      </div>
+    );
 }
 
 type additionVideo = Pick<coverProp, 'id' | 'onSubmitSuccess'>
@@ -984,17 +982,17 @@ const AddOrganizer = ({id,onSubmitSuccess,data}:OrganizerType)=>{
                     <div className="w-[70vw]">
                         <div className="my-5 w-full flex justify-between items-center">
                             <p className="text-lg">Select Members</p>
-                            <button
+                            {selectedMembers.length>0 &&<button
                                 className="rounded-lg  bg-green-700 px-3 py-1 text-sm text-white"
                                 onClick={() => {
                                     handleUpdate()
                                 }}
                                 >
                                 Update
-                                </button>
+                                </button>}
                         </div>
                         <div>
-                            <ul className=" w-full grid bg-red-200 grid-cols-2 gap-x-2 gap-y-3">
+                            <ul className=" w-full grid  grid-cols-2 gap-x-2 gap-y-3">
                             {members.map(member => (
                                 <li key={member.id}>
                                 <label>

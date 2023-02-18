@@ -3,32 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dynamic from "next/dynamic";
 import React,{ useState, FC, FormEvent, useEffect } from "react"
 import {useRouter} from "next/navigation";
+import { api } from "../../../utils/api";
+import Lottie from "lottie-react";
 
 const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), { ssr: false });
 
-let nav = {
-    Events: 'Events',
-    Jobs: 'Jobs',
-    Donations: 'Donations'
-}
-
-let pages = {
-    createEvent: 'createEvent',
-    eventList: 'eventList',
-    createJob: 'createJob',
-    jobList: 'jobList',
-    applicants: 'applicants',
-    donationList: 'donationList'
-}
-
-type props = {
-    setPage: (page: string) => void,
-    setNav: (nav: string) => void
-}
-
-export default function CreateJobs({ setPage, setNav }: props) {
+export default function CreateJobs() {
 
     const router = useRouter()
+    const createVacancy = api.vacancy.createRecord.useMutation()
     const [name, setName] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [jobCount, setJobCount] = useState<string>('0')
@@ -37,58 +20,33 @@ export default function CreateJobs({ setPage, setNav }: props) {
     const [interviewDate, setInterviewDate] = useState<string>('')
     const [location, setLocation] = useState<string>('')
     const [applicationFee, setApplicationFee] = useState<string>('0')
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isSuccess, setIsSuccess] = useState<boolean>(false)
-    const [loadingMsg, setLoadingMsg] = useState<string>('')
-    const [error, setError] = useState<string>('')
+
+    useEffect(()=>{
+        if(createVacancy.isSuccess){
+            router.back()
+        }
+    },[createVacancy.data])
 
     const handleSubmit = () => {
-       
-        if (name.length == 0 || description.length == 0 || location.length == 0) {
-            setError('Field Empty')
-        }
-        else {
-            setIsLoading(true)
-            setLoadingMsg('Wait, Adding New Record..')
-            fetch('/api/admin/vaccancy/saveNewJob', {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: name,
-                    description: description,
-                    jobCount: jobCount,
-                    salary: salary,
-                    interviewDate: interviewDate,
-                    lastSubmissionDate: lastSubmissionDate,
-                    location: location,
-                    applicationFee: applicationFee
-                })
-            }).then(res => res.json()).then(data => {
-                if (data.status == 200) {
-                    // setIsLoading(false)
-                    setLoadingMsg('Record Added successfully...')
-                    setIsSuccess(true)
-                }
-                else {
-                    setError(data.message)
-                }
-            })
-        }
+        createVacancy.mutate({
+            vacancyName: name,
+            vacancyDescription: description,
+            jobCount: parseInt(jobCount),
+            salary: parseInt(salary),
+            interviewDate: interviewDate,
+            lastSubmissionDate: lastSubmissionDate,
+            location: location,
+            fees: parseInt(applicationFee),
 
+        })
     }
 
-    return (isLoading ?
-        <div className="grid place-content-end">
-            <p className="font-bold text-2xl text-black">{loadingMsg}</p>
-            {isSuccess &&
-                <div className="space-x-3 flex flex-row item-center">
-                    <p className="text-blue-500 font-medium text-lg py-2 underline cursor-pointer" onClick={() => setPage(pages.jobList)}>Job List</p>
-                    <p className="text-blue-500 font-medium text-lg py-2 underline cursor-pointer"
-                        onClick={() => {
-                            setIsLoading(false)
-                            setIsSuccess(false)
-                        }}>add new record</p>
-                </div>}
+    return (createVacancy.isLoading ?
+        <div className="grid place-content-center h-[400px] w-[100vw]">
+            <Lottie 
+                animationData={require('../../../../public/lottie/loading.json')}
+                className='h-[50px] w-[50px]'
+            />
         </div> :
         <div className="container w-[100vw] flex justify-center">
             <div className=' md:w-[70vw] w-[90vw]  md:px-8 px-4  py-8 flex flex-col items-center '>
@@ -174,7 +132,7 @@ export default function CreateJobs({ setPage, setNav }: props) {
                     />
                     
                 </form>
-                <p>{error}</p>
+                
             </div>
         </div>
     )

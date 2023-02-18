@@ -27,7 +27,7 @@ export default function CreateEvent({ setPage, setNav }: props) {
         saveEventRequest.mutate({
             name:eventName,
             location:eventLocation,
-            dateTime:new Date(eventDateTime).toISOString(),
+            dateTime:eventDateTime,
             description:eventDescription
         })
     }

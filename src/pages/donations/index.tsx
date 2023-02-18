@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import UserLayout from '../userLayout'
+import UserLayout from '../../components/userLayout'
 
 export default function donations() {
     const [isIndia, setIsIndia] = useState<boolean>(true)

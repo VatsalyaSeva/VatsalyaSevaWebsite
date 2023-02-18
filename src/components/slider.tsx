@@ -1,30 +1,38 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+import { api } from '../utils/api'
+import { HomeImages } from '@prisma/client'
 
-export const slideImage = [
-    '/slider/img63.jpg',
-    '/slider/img66.jpg',
-    '/slider/img67.jpg',
-    '/slider/img68.jpg',
-    '/slider/img69.jpg',
-    '/slider/img70.jpg',
-    '/slider/img71.jpg',
-    '/slider/img72.jpg',
-    '/slider/img73.jpg',
-    '/slider/img74.jpg',
-    '/slider/img75.jpg',
-    '/slider/img76.jpg',
-    '/slider/img77.jpg',
-    '/slider/img78.jpg',
-    '/slider/img79.jpg',
-    '/slider/img80.jpg',
-    '/slider/img81.jpg',
-    '/slider/img82.jpg',
-]
+// export const slideImage = [
+//     '/slider/img63.jpg',
+//     '/slider/img66.jpg',
+//     '/slider/img67.jpg',
+//     '/slider/img68.jpg',
+//     '/slider/img69.jpg',
+//     '/slider/img70.jpg',
+//     '/slider/img71.jpg',
+//     '/slider/img72.jpg',
+//     '/slider/img73.jpg',
+//     '/slider/img74.jpg',
+//     '/slider/img75.jpg',
+//     '/slider/img76.jpg',
+//     '/slider/img77.jpg',
+//     '/slider/img78.jpg',
+//     '/slider/img79.jpg',
+//     '/slider/img80.jpg',
+//     '/slider/img81.jpg',
+//     '/slider/img82.jpg',
+// ]
 
 export default function Slider() {
-    const images = slideImage
+    const [images,setImages] = useState<HomeImages[]>([])
     const [activeIndex, setActiveIndex] = useState(0)
+    const getAllHomeImage = api.homeImage.getAllRecord.useQuery()
+    useEffect(()=>{
+        if(getAllHomeImage.isSuccess){
+            setImages(getAllHomeImage.data)
+        }
+    },[getAllHomeImage.data])
 
     useEffect(() => {
         setTimeout(() => {
@@ -41,13 +49,11 @@ export default function Slider() {
     return (
         <div className='relative'>
             <img
-                src={images[activeIndex]}
+                src={images[activeIndex]?.imageSourceUrl}
                 className={'w-full object-fill h-[300px] sm:h-[400px] lg:h-[640px]'}
             />
             <div className='absolute z-[2] bottom-0 bg-gradient-to-t from-gray-900 to-transparent w-full h-[300px] sm:h-[400px] lg:h-[580px] flex justify-end'>
-
             </div>
-
         </div>
     )
 }

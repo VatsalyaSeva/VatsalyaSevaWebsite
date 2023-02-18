@@ -34,20 +34,37 @@ const Event = createTRPCRouter({
         return data
     }),
     deleteEventById:publicProcedure
-    .input(z.object({id:z.string()}))
-    .query(({input,ctx})=>{
-        let data = ctx.prisma.events.delete({
+    .input(z.object({
+        id:z.string(),
+        coverImage:z.string().or(z.null()),
+        additionalImages:z.array(z.string())
+    }))
+    .mutation(async ({input,ctx})=>{
+        await ctx.prisma.additionalImages.deleteMany({
+            where:{
+                eventsId:input.id
+            }
+        })
+        let data = await ctx.prisma.events.delete({
             where:{
                 id:input.id
             },
             include:{
-                additionalImages:true,
                 additionalVideos:true,
                 specialGuests:true,
                 organizers:true,
                 performers:true
             }
         })
+
+        if(input.coverImage != null){
+            ctx.sanityClient.delete(input.coverImage)
+        }
+
+        input.additionalImages.forEach((image)=>{
+            ctx.sanityClient.delete(image)
+        })
+
         return data
     }),
     saveEvent:publicProcedure
@@ -71,23 +88,19 @@ const Event = createTRPCRouter({
     updateEvent:publicProcedure
     .input(z.object({
         id:z.string(),
-        name:z.string().optional(),
-        description:z.string().optional(),
-        location:z.string().optional(),
-        dateTime:z.string().optional()
+        update:z.object({
+            name:z.string(),
+            description:z.string(),
+            location:z.string(),
+            dateTime:z.string()
+        })
     }))
     .mutation(async ({input,ctx})=>{
-        let event = await ctx.prisma.events.findFirst({where:{id:input.id}})
         let data = await ctx.prisma.events.update({
             where:{
                 id:input.id
             },
-            data:{
-                name:input.name ? input.name:event?.name,
-                description:input.description ? input.description:event?.description,
-                location:input.location ? input.location:event?.location,
-                dateTime:input.dateTime? input.dateTime:event?.dateTime
-            }
+            data:input.update
         })
         return data
     }),
@@ -127,13 +140,12 @@ const Event = createTRPCRouter({
         return data
     }),
     removeEventImage:publicProcedure
-    .input(z.object({imageId:z.string()}))
+    .input(z.object({
+        imageId:z.string(),
+        imagePath:z.string()
+    }))
     .mutation(async ({input,ctx})=>{
-        let additionalImage = await ctx.prisma.additionalImages.findFirst({
-            where:{
-                id:input.imageId
-            }
-        })
+        await ctx.sanityClient.delete(input.imagePath)
         
         let data = await ctx.prisma.additionalImages.delete({
             where:{
@@ -141,9 +153,27 @@ const Event = createTRPCRouter({
             }
         })
 
-        if(additionalImage){
-            fs.remove(`./public/${additionalImage.image}`)
-        }
+        return data
+    }),
+    addEventImage:publicProcedure
+    .input(z.object({
+        eventId:z.string(),
+        imagePath:z.string(),
+        imagePathUri:z.string()
+    }))
+    .mutation(async ({input,ctx})=>{
+        
+        let data = await ctx.prisma.additionalImages.create({
+            data:{
+                image:input.imagePath,
+                imageUrl:input.imagePathUri,
+                Events:{
+                    connect:{
+                        id:input.eventId
+                    }
+                }
+            }
+        })
 
         return data
     }),
@@ -210,29 +240,40 @@ const Event = createTRPCRouter({
         return []
     }),
     removeCoverImage:publicProcedure
-    .input(z.object({id:z.string()}))
+    .input(z.object({
+        id:z.string(),
+        coverImagePath:z.string()
+    }))
     .mutation(async({input,ctx})=>{
-        let image = await ctx.prisma.events.findFirst({
-            where:{
-                id:input.id
-            },
-            select:{
-                coverImage:true
-            }
-        })
+        await ctx.sanityClient.delete(input.coverImagePath)
         
         let data =  await ctx.prisma.events.update({
             where:{
                 id:input.id
             },
             data:{
-                coverImage:null
+                coverImage:null,
+                coverImageUrl:null
             }
         })
-        
-        fs.remove(`./public/${image?.coverImage}`, err => {
-            if (err) return console.error(err)
-            console.log('success!')
+
+        return data
+    }),
+    addCoverImage:publicProcedure
+    .input(z.object({
+        id:z.string(),
+        coverImagePath:z.string(),
+        coverImagePathUrl:z.string()
+    }))
+    .mutation(async({input,ctx})=>{
+        let data =  await ctx.prisma.events.update({
+            where:{
+                id:input.id
+            },
+            data:{
+                coverImage:input.coverImagePath,
+                coverImageUrl:input.coverImagePathUrl
+            }
         })
 
         return data
