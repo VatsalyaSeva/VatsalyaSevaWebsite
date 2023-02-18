@@ -3,20 +3,13 @@ import { Vacancy } from "@prisma/client"
 import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation";
 import { api } from "../utils/api";
-import { router } from "@trpc/server";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 
-type props = {
-    setPage: (page: string) => void,
-    setNav: (nav: string) => void
-}
-
-export default function JobList({ setPage, setNav }: props) {
+export default function JobList() {
     const [jobList, setJobList] = useState<Vacancy[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [selectedJob, setSelectedJob] = useState<Vacancy>({} as Vacancy)
     const route = useRouter()
     const getVacancyList = api.vacancy.getAll.useQuery()
 

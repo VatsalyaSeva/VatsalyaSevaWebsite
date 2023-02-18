@@ -1,12 +1,8 @@
 import { Donation } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
-type props = {
-    setPage: (page: string) => void,
-    setNav: (nav: string) => void
-}
 
-export default function DonationList({ setPage, setNav }: props) {
+export default function DonationList() {
     const [donationList, setDonationList] = useState<Donation[]>([])
 
     useEffect(() => {

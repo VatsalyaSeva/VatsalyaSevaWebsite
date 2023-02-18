@@ -6,14 +6,10 @@ import { api } from '../../../utils/api'
 import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), { ssr: false });
 
-type props = {
-    setPage: (page: string) => void,
-    setNav: (nav: string) => void
-}
 
-export default function CreateEvent({ setPage, setNav }: props) {
+export default function CreateEvent() {
 
-    let saveEventRequest = api.event.saveEvent.useMutation()
+    const saveEventRequest = api.event.saveEvent.useMutation()
 
     const router = useRouter()
 
@@ -33,9 +29,6 @@ export default function CreateEvent({ setPage, setNav }: props) {
     }
 
     useEffect(()=>{
-        if(saveEventRequest.isLoading){
-
-        }
         if(saveEventRequest.isSuccess){
             router.back()
         }
