@@ -1,6 +1,5 @@
 "use client";
 import { Vacancy, SpecialGuest, Performer, Member, Organizers } from "@prisma/client";
-import { SingleJobComponent } from "../../../../components/singleJobComponent";
 import React, { useState, useEffect, useCallback } from "react";
 import { Loader } from "../../../../components/loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
