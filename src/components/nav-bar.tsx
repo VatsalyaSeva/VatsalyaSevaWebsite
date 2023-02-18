@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 export default function NavBar() {
     const path = usePathname()
-    console.log(path)
+
     return (
         <div className='max-w-screen bg-amber-100 rounded-md flex flex-row justify-between items-center px-5 py-3'>
             <Link 
