@@ -10,7 +10,7 @@ import { sanityClient } from '../../server/storage';
 import { basename } from 'path';
 
 
-jobs.getInitialProps = async (ctx: { query: { id: string; }; }) => {
+Jobs.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 
