@@ -12,7 +12,7 @@ type Data = {
     }
 }
 
-export default function login() {
+export default function Login() {
     const patternEmail = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/"
     const regex = new RegExp(patternEmail)
 

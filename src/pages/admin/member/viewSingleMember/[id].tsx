@@ -12,11 +12,11 @@ import { useFilePicker } from 'use-file-picker';
 import { sanityClient } from '../../../../server/storage';
 import { basename } from 'path';
 
-viewSingleMember.getInitialProps = async (ctx: { query: { id: string; }; }) => {
+ViewSingleMember.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 
-export default function viewSingleMember(pageProp:AppProps['pageProps']){
+export default function ViewSingleMember(pageProp:AppProps['pageProps']){
 
     const router = useRouter()
     const [member,setMember] = useState<Member>({} as Member)
@@ -54,9 +54,9 @@ export default function viewSingleMember(pageProp:AppProps['pageProps']){
 
     useEffect(()=>{
         if(filesContent.length>0){
-            let filePath = filesContent[0]
+            const filePath = filesContent[0]
             if(filePath){
-                let n  = Buffer.from(filePath.content)
+                const n  = Buffer.from(filePath.content)
 
                 if(typeof(member.profilePic) == 'string'){
                     sanityClient.delete(member.profilePic)

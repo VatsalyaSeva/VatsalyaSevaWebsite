@@ -11,7 +11,7 @@ import { api } from "../../../utils/api"
 
 export default function CreateMember({}) {
 
-    let addMember = api.member.createMember.useMutation()
+    const addMember = api.member.createMember.useMutation()
 
     const [memberName, setMemberName] = useState<string>('')
     const [phoneNumber, setPhoneNumber] = useState<string>('')
@@ -29,8 +29,8 @@ export default function CreateMember({}) {
     // sanityClient.delete('image-dbd04fa33cfd495d73e6c8071ce8f9afe05bb515-3840x2160-jpg').then(data=> console.log(data))
 
     const handleSubmit = async () => {
-        let filePath = URL.createObjectURL(memberImage)
-        let data = await sanityClient.assets.upload(
+        const filePath = URL.createObjectURL(memberImage)
+        const data = await sanityClient.assets.upload(
             'image', memberImage, {
                 filename: basename(filePath)
             }

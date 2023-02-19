@@ -25,7 +25,7 @@ export default function JobList() {
     useEffect(()=>{
         if(deleteVacancy.isSuccess){
             setDeleteIndex(-1)
-            let data = deleteVacancy.data
+            const data = deleteVacancy.data
             if(data){
                 setJobList(jobList.filter(item => item.id != data.id))
             }

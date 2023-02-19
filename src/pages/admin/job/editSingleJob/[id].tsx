@@ -16,13 +16,13 @@ EditJob.getInitialProps = async (ctx: { query: { id: string } }) => {
 
 export default function EditJob(pageProp:AppProps['pageProps']){
     const [jobData,setJobData] = useState<Vacancy>({} as Vacancy)
-    let router = useRouter()
+    const router = useRouter()
     const getSingleJob = api.vacancy.getById.useQuery({id:pageProp.id,applicant:false})
     const updateSingleJob = api.vacancy.updateRecord.useMutation()
 
     useEffect(()=>{
         if(getSingleJob.isSuccess){
-            let res = getSingleJob.data
+            const res = getSingleJob.data
             if(res){
                 setJobData(res)
             }

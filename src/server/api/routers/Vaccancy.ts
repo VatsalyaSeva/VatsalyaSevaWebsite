@@ -1,10 +1,9 @@
 import { publicProcedure,createTRPCRouter } from "../trpc";
 import { z } from "zod";
-import fs from 'fs-extra'
 
 const Vacancy = createTRPCRouter({
     getAll:publicProcedure.query(({ctx})=>{
-        let data = ctx.prisma.vacancy.findMany({})
+        const data = ctx.prisma.vacancy.findMany({})
         return data
     }),
     getById:publicProcedure
@@ -39,7 +38,7 @@ const Vacancy = createTRPCRouter({
             }
         });
 
-        let data = await ctx.prisma.vacancy.delete({
+        const data = await ctx.prisma.vacancy.delete({
             where:{
                 id: input.id
             }
@@ -67,7 +66,7 @@ const Vacancy = createTRPCRouter({
         fees: z.number(),
     }))
     .mutation(async ({ctx,input})=>{
-        let res = await ctx.prisma.vacancy.create({
+        const res = await ctx.prisma.vacancy.create({
             data:input
         })
         return res
@@ -79,7 +78,7 @@ const Vacancy = createTRPCRouter({
         qrCodePathUrl:z.string()
     }))
     .mutation(async ({ctx,input})=>{
-        let data = await ctx.prisma.vacancy.update({
+        const data = await ctx.prisma.vacancy.update({
             where:{id:input.vacancyId},
             data:{
                 qrCodePath:input.qrCodePath,
@@ -94,7 +93,7 @@ const Vacancy = createTRPCRouter({
         qrCodePath:z.string()
     }))
     .mutation(async ({ctx,input})=>{
-        let data = await ctx.prisma.vacancy.update({
+        const data = await ctx.prisma.vacancy.update({
             where:{id:input.vacancyId},
             data:{
                 qrCodePath:null,
@@ -120,7 +119,7 @@ const Vacancy = createTRPCRouter({
         })
     }))
     .mutation(async({ctx,input})=>{
-        let res = await ctx.prisma.vacancy.update({
+        const res = await ctx.prisma.vacancy.update({
             where:{
                 id:input.id
             },

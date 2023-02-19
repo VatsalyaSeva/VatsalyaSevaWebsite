@@ -48,21 +48,7 @@ const Home:NextPage = ()=> {
                     </div>
                 </div>
                 <div className=' w-full px-5 py-5'>
-                {/* <div>
-                    <p className='font-bold text-xl text-black py-3'>All Events</p>
-                    <div className='grid grid-cols-5'>
-                        {eventsList.map((item, index) => {
-                            return (
-                                <Link className='px-2' href={`/events/${item.id}`}>
-                                    <img src={item.imagesUrl[0].image} className={'rounded-lg'} />
-                                    <p className='font-bold pt-[8px] text-md'>{item.name}</p>
-                                    <p className=' text-sm'>{new Date(item.date).toDateString()}</p>
-                                </Link>
-                            )
-                        })}
 
-                    </div>
-                </div> */}
                 <div className='mt-8'>
                     <p className='font-bold text-xl text-black py-1'>All Vacancy</p>
                     <div className='flex flex-row space-x-5'>

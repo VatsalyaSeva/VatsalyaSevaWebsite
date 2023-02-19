@@ -16,11 +16,11 @@ import { sanityClient } from '../../../../server/storage';
 import { basename } from 'path';
 
 
-viewSingleJob.getInitialProps = async (ctx: { query: { id: string; }; }) => {
+ViewSingleJob.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 
-export default function viewSingleJob(pageProp:AppProps['pageProps']){
+export default function ViewSingleJob(pageProp:AppProps['pageProps']){
     type vacancy = Vacancy & {
         applecants: Applicant[];
     }
@@ -28,7 +28,7 @@ export default function viewSingleJob(pageProp:AppProps['pageProps']){
     const addQRCode = api.vacancy.addQRCode.useMutation()
     const removeQRCode = api.vacancy.removeQRCode.useMutation()
     const router = useRouter()
-    let [openFileSelector, { filesContent, loading,errors,clear }] = useFilePicker({
+    const [openFileSelector, { filesContent, loading,errors,clear }] = useFilePicker({
         accept:'image/*',
         multiple:false,
         readAs:'ArrayBuffer',
@@ -37,9 +37,9 @@ export default function viewSingleJob(pageProp:AppProps['pageProps']){
 
     useEffect(()=>{
         if(filesContent.length>0 && !errors[0]?.fileSizeToolarge){
-            let file = filesContent[0]
+            const file = filesContent[0]
             if(file){
-                let n = Buffer.from(file.content)
+                const n = Buffer.from(file.content)
                 sanityClient.assets.upload('image',n,{
                     filename: basename(file.name)
                 }).then(data =>{

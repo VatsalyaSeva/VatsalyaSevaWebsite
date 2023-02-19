@@ -1,14 +1,9 @@
 import { faCalendar, faCoins, faFile, faImage, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { use, useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'  
-import { api } from '../../utils/api'
-import { HomeImages } from '@prisma/client'
-import { FilePickerReturnTypes, useFilePicker } from 'use-file-picker'
-import { sanityClient } from '../../server/storage'
-import { basename } from 'path'
 
-export default function admin() {
+export default function Admin() {
     const router = useRouter()
 
     return (

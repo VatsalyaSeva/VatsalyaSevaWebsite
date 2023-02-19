@@ -7,7 +7,7 @@ const Applicants = createTRPCRouter({
         search:z.string()
     }))
     .query(({ctx,input})=>{
-        let data = ctx.prisma.applicant.findMany({
+        const data = ctx.prisma.applicant.findMany({
             where:{
                 name:{
                     contains:input.search
@@ -21,7 +21,7 @@ const Applicants = createTRPCRouter({
         id:z.string()
     }))
     .query(({ctx,input})=>{
-        let data = ctx.prisma.applicant.findMany({
+        const data = ctx.prisma.applicant.findMany({
             where:{
                 id:{
                     equals:input.id
@@ -33,7 +33,7 @@ const Applicants = createTRPCRouter({
     getByJobId:publicProcedure
     .input(z.object({id:z.string()}))
     .query(({input,ctx})=>{
-        let data = ctx.prisma.applicant.findMany({
+        const data = ctx.prisma.applicant.findMany({
             where:{
                 vacancyId:input.id
             }
@@ -53,7 +53,7 @@ const Applicants = createTRPCRouter({
     deleteSingle:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.applicant.delete({
+        const data = await ctx.prisma.applicant.delete({
             where:{
                 id:input.id
             }
@@ -74,7 +74,7 @@ const Applicants = createTRPCRouter({
         })
     }))
     .mutation(async ({ctx,input})=>{
-        let a = await ctx.prisma.applicant.findMany({
+        const a = await ctx.prisma.applicant.findMany({
             where:{
                 vacancyId:input.vacancyId,
                 email:input.add.email
@@ -82,7 +82,7 @@ const Applicants = createTRPCRouter({
         })
 
         if(a.length == 0){
-            let data = await ctx.prisma.applicant.create({
+            const data = await ctx.prisma.applicant.create({
                 data:{
                     ...input.add,
                     vacancy: {

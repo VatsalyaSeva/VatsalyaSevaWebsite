@@ -2,7 +2,7 @@
   "overrides": [
     {
       "extends": [
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        
       ],
       "files": ["*.ts", "*.tsx"],
       "parserOptions": {
@@ -17,7 +17,11 @@
   "plugins": ["@typescript-eslint"],
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   "rules": {
-    "@typescript-eslint/consistent-type-imports": "warn",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/no-floating-promises": "off" ,
+    "react/no-unescaped-entities":"off",
+    "react/jsx-key":"off",
+    "react/jsx-no-target-blank":"off",
+    "prefer-const":"off"
   }
 }

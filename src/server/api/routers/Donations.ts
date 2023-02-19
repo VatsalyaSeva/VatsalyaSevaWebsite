@@ -5,7 +5,7 @@ import { z } from 'zod'
 export const Donator = createTRPCRouter({
     getAllRecord:publicProcedure
     .query(async ({ctx})=>{
-        let data = await ctx.prisma.donator.findMany({
+        const data = await ctx.prisma.donator.findMany({
             include:{
                 donations:true
             }
@@ -14,7 +14,7 @@ export const Donator = createTRPCRouter({
     }),
     getTopDonators:publicProcedure
     .query(({ctx})=>{
-        let data = ctx.prisma.donator.findMany({
+        const data = ctx.prisma.donator.findMany({
             select: {
                 id: true,
                 name: true,
@@ -37,7 +37,7 @@ export const Donator = createTRPCRouter({
         passwordHash:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let res = await ctx.prisma.donator.create({
+        const res = await ctx.prisma.donator.create({
             data:{
                 name:input.name,
                 countryCode:input.countryCode,
@@ -58,7 +58,7 @@ export const Donator = createTRPCRouter({
         status:z.boolean()
     }))
     .mutation(async ({ctx,input})=>{
-        let res = await ctx.prisma.donator.update({
+        const res = await ctx.prisma.donator.update({
             where:{
                 id:input.donatorId
             },

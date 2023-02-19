@@ -8,9 +8,9 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/navigation'
 
 export default function Members() {
-    let getAllMembers = api.member.getAll.useQuery()
-    let deleteMember = api.member.deleteById.useMutation()
-    let router = useRouter()
+    const getAllMembers = api.member.getAll.useQuery()
+    const deleteMember = api.member.deleteById.useMutation()
+    const router = useRouter()
 
     const [members,setMembers] = useState<Member[]>([])
 

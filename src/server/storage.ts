@@ -1,8 +1,6 @@
 import {createClient} from '@sanity/client'
-import {basename} from 'path'
-import {createReadStream} from 'fs'
 
-let date = new Date().toISOString().slice(0,10)
+const date = new Date().toISOString().slice(0,10)
 
 export const sanityClient = createClient({
   projectId: '50fcbg30',

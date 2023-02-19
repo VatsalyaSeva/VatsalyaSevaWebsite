@@ -24,11 +24,11 @@ let ModeType = {
 
 type ModelKeys = keyof typeof ModeType;
 
-viewSingleEvent.getInitialProps = async (ctx: { query: { id: string; }; }) => {
+ViewSingleEvent.getInitialProps = async (ctx: { query: { id: string; }; }) => {
   return { id: ctx.query.id };
 };
 
-export default function viewSingleEvent(pageProp: AppProps["pageProps"]) {
+export default function ViewSingleEvent(pageProp: AppProps["pageProps"]) {
   const [eventData, setEventDate] = useState<(typeof getSingleEvent)["data"]>(
     {} as (typeof getSingleEvent)["data"]
   );

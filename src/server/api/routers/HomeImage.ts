@@ -11,7 +11,7 @@ export const HomeImage = createTRPCRouter({
         }))
     }))
     .mutation(async ({input,ctx})=>{
-        let response = await ctx.prisma.homeImages.createMany({
+        const response = await ctx.prisma.homeImages.createMany({
             data:input.data
         })
         return response
@@ -23,21 +23,21 @@ export const HomeImage = createTRPCRouter({
         imageDescription:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let response = await ctx.prisma.homeImages.create({
+        const response = await ctx.prisma.homeImages.create({
             data:input
         })
         return response
     }),
     getAllRecord:publicProcedure
     .query(({ctx})=>{
-        let response = ctx.prisma.homeImages.findMany({})
+        const response = ctx.prisma.homeImages.findMany({})
         return response
     }),
     deleteSingleRecord:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async({ctx, input})=>{
-        let response = await ctx.prisma.homeImages.delete({where:{id:input.id}})
-        let result = await ctx.sanityClient.delete(response.imageSource)
+        const response = await ctx.prisma.homeImages.delete({where:{id:input.id}})
+        await ctx.sanityClient.delete(response.imageSource)
         return response
     })
 })

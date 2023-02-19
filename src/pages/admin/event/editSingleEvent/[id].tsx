@@ -16,8 +16,8 @@ CreateEvent.getInitialProps = async (ctx: { query: { id: string } }) => {
 
 export default function CreateEvent({ id }:props) {
 
-    let updateEventRequest = api.event.updateEvent.useMutation()
-    let getEvent = api.event.getById.useQuery({id})
+    const updateEventRequest = api.event.updateEvent.useMutation()
+    const getEvent = api.event.getById.useQuery({id})
     const [eventName, setEventName] = useState<string>('')
     const [eventDateTime,setEventDateTime]  = useState<string>('')
     const [eventLocation, setEventLocation] = useState<string>('')
@@ -28,7 +28,7 @@ export default function CreateEvent({ id }:props) {
 
         if(getEvent.isSuccess){
             if(getEvent.data){
-                let { name, location, description, dateTime } = getEvent.data
+                const { name, location, description, dateTime } = getEvent.data
                 setEventName(name)
                 setEventDateTime(dateTime.slice(0,16))
                 setEventLocation(location)

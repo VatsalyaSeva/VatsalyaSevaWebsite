@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { api } from '../../utils/api';
 
 
-export default function jobs() {
+export default function Jobs() {
     const [jobList, setJobList] = useState<Vacancy[]>([])
     const router = useRouter()
     const getAllJobs = api.vacancy.getAll.useQuery()

@@ -14,7 +14,7 @@ jobs.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 
-export default function jobs(pageProp:{id:string}) {
+export default function Jobs(pageProp:{id:string}) {
     
     const route = useRouter()
     const [name, setName] = useState<string>('')
@@ -33,7 +33,7 @@ export default function jobs(pageProp:{id:string}) {
 
     useEffect(() => {
         if(getSingleJob.isSuccess){
-            let data = getSingleJob.data
+            const data = getSingleJob.data
             if(data){
                 setData(data)
             }
@@ -45,7 +45,7 @@ export default function jobs(pageProp:{id:string}) {
             setServerError(addApplicant.error.message)
         }
         if(addApplicant.isSuccess){
-            let a = addApplicant.data
+            const a = addApplicant.data
             if(a.code == 400){
                 setServerError(a.message)
             }else{
@@ -57,7 +57,7 @@ export default function jobs(pageProp:{id:string}) {
     const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        let data = await sanityClient.assets.upload(
+        const data = await sanityClient.assets.upload(
             'file', cvFile, {
                 filename: `${name}_${email}${transactionId}`
             }

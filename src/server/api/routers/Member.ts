@@ -5,13 +5,13 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 export const Member = createTRPCRouter({
   getAll:publicProcedure
   .query(async ({ctx})=>{
-    let data = await ctx.prisma.member.findMany({})
+    const data = await ctx.prisma.member.findMany({})
     return data
   }),
   getById:publicProcedure
   .input(z.object({id:z.string()}))
   .query(async({ctx,input})=>{
-    let data = await ctx.prisma.member.findFirst({
+    const data = await ctx.prisma.member.findFirst({
       where:{
         id:input.id
       }
@@ -30,7 +30,7 @@ export const Member = createTRPCRouter({
     membership:z.string()
   }))
   .mutation(({input,ctx})=>{
-    let data = ctx.prisma.member.create({
+    const data = ctx.prisma.member.create({
       data:{
         name:input.name,
         email:input.email,
@@ -55,7 +55,7 @@ export const Member = createTRPCRouter({
     membership:z.string()
   }))
   .mutation(async ({input,ctx})=>{
-    let data = await ctx.prisma.member.update({
+    const data = await ctx.prisma.member.update({
       where:{
         id:input.id
       },
@@ -79,7 +79,7 @@ export const Member = createTRPCRouter({
     profilePicUrl:z.string()
   }))
   .mutation(({input,ctx})=>{
-    let data = ctx.prisma.member.update({
+    const data = ctx.prisma.member.update({
       where:{
         id:input.id
       },
@@ -94,11 +94,11 @@ export const Member = createTRPCRouter({
   .input(z.object({id:z.string()}))
   .mutation(async({ctx,input})=>{
 
-    let data = await ctx.prisma.member.delete({
+    const data = await ctx.prisma.member.delete({
       where:{id:input.id}
     })
     if(data){
-      let { profilePic } = data 
+      const { profilePic } = data 
       if(typeof(profilePic) == 'string'){
         ctx.sanityClient.delete(profilePic)
       }
@@ -108,19 +108,19 @@ export const Member = createTRPCRouter({
   deleteProfilePic:publicProcedure
   .input(z.object({id:z.string()}))
   .mutation(async({ctx,input})=>{
-    let member = await ctx.prisma.member.findFirst({where:{id:input.id}})
+    const member = await ctx.prisma.member.findFirst({where:{id:input.id}})
     if(member){
-      let data = await ctx.prisma.member.update({
+      const data = await ctx.prisma.member.update({
         where:{id:input.id},
         data:{
           profilePic:null,
           profilePicUrl:null
         }
       })
-      let { profilePic } = member 
+      const { profilePic } = member 
       if(typeof(profilePic) == 'string'){
-        let a = await ctx.sanityClient.delete(profilePic)
-        console.log(a)
+         ctx.sanityClient.delete(profilePic)
+        
       }
       return data
     }

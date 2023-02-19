@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 const Event = createTRPCRouter({
     getAll:publicProcedure
     .query(({ctx})=>{
-        let data = ctx.prisma.events.findMany({
+        const data = ctx.prisma.events.findMany({
             include:{
                 additionalImages:true,
                 additionalVideos:true,
@@ -19,7 +19,7 @@ const Event = createTRPCRouter({
     getById:publicProcedure
     .input(z.object({id:z.string()}))
     .query(({input,ctx})=>{
-        let data = ctx.prisma.events.findFirst({
+        const data = ctx.prisma.events.findFirst({
             where:{
                 id:input.id
             },
@@ -45,7 +45,7 @@ const Event = createTRPCRouter({
                 eventsId:input.id
             }
         })
-        let data = await ctx.prisma.events.delete({
+        const data = await ctx.prisma.events.delete({
             where:{
                 id:input.id
             },
@@ -75,7 +75,7 @@ const Event = createTRPCRouter({
         dateTime:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.events.create({
+        const data = await ctx.prisma.events.create({
             data:{
                 name:input.name,
                 description:input.description,
@@ -96,7 +96,7 @@ const Event = createTRPCRouter({
         })
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.events.update({
+        const data = await ctx.prisma.events.update({
             where:{
                 id:input.id
             },
@@ -113,7 +113,7 @@ const Event = createTRPCRouter({
             name:z.string()
         }))}))
     .mutation(async({input,ctx})=>{
-        let data = await ctx.prisma.events.update({
+        const data = await ctx.prisma.events.update({
             where:{
                 id:input.eventId
             },
@@ -134,7 +134,7 @@ const Event = createTRPCRouter({
     removeOrganizer:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async({input,ctx})=>{
-        let data = await ctx.prisma.organizers.delete({
+        const data = await ctx.prisma.organizers.delete({
             where:{id:input.id}
         })
         return data
@@ -147,7 +147,7 @@ const Event = createTRPCRouter({
     .mutation(async ({input,ctx})=>{
         await ctx.sanityClient.delete(input.imagePath)
         
-        let data = await ctx.prisma.additionalImages.delete({
+        const data = await ctx.prisma.additionalImages.delete({
             where:{
                 id:input.imageId
             }
@@ -163,7 +163,7 @@ const Event = createTRPCRouter({
     }))
     .mutation(async ({input,ctx})=>{
         
-        let data = await ctx.prisma.additionalImages.create({
+        const data = await ctx.prisma.additionalImages.create({
             data:{
                 image:input.imagePath,
                 imageUrl:input.imagePathUri,
@@ -180,13 +180,13 @@ const Event = createTRPCRouter({
     removeEventVideo:publicProcedure
     .input(z.object({videoId:z.string()}))
     .mutation(async ({input,ctx})=>{
-        let additionalVideos = await ctx.prisma.additionalVideos.findFirst({
+        const additionalVideos = await ctx.prisma.additionalVideos.findFirst({
             where:{
                 id:input.videoId
             }
         })
         
-       let data = await ctx.prisma.additionalVideos.delete({
+        const data = await ctx.prisma.additionalVideos.delete({
             where:{
                 id:input.videoId
             }
@@ -200,7 +200,7 @@ const Event = createTRPCRouter({
     removeSpecialGuest:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async ({input,ctx})=>{
-        let guest = await ctx.prisma.specialGuest.findFirst({
+        const guest = await ctx.prisma.specialGuest.findFirst({
             where:{
                 id:input.id
             }
@@ -221,7 +221,7 @@ const Event = createTRPCRouter({
     removePerformer:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async ({input,ctx})=>{
-        let performer = await ctx.prisma.performer.findFirst({
+        const performer = await ctx.prisma.performer.findFirst({
             where:{
                 id:input.id
             }
@@ -247,7 +247,7 @@ const Event = createTRPCRouter({
     .mutation(async({input,ctx})=>{
         await ctx.sanityClient.delete(input.coverImagePath)
         
-        let data =  await ctx.prisma.events.update({
+        const data =  await ctx.prisma.events.update({
             where:{
                 id:input.id
             },
@@ -266,7 +266,7 @@ const Event = createTRPCRouter({
         coverImagePathUrl:z.string()
     }))
     .mutation(async({input,ctx})=>{
-        let data =  await ctx.prisma.events.update({
+        const data =  await ctx.prisma.events.update({
             where:{
                 id:input.id
             },
@@ -285,7 +285,7 @@ const Event = createTRPCRouter({
         guestBio:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.events.update({
+        const data = await ctx.prisma.events.update({
             where:{
                 id:input.eventId
             },
@@ -309,7 +309,7 @@ const Event = createTRPCRouter({
         guestBio:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.specialGuest.update({
+        const data = await ctx.prisma.specialGuest.update({
             where:{
                 id:input.guestId
             },
@@ -329,7 +329,7 @@ const Event = createTRPCRouter({
         performerBio:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.events.update({
+        const data = await ctx.prisma.events.update({
             where:{
                 id:input.eventId
             },
@@ -351,7 +351,7 @@ const Event = createTRPCRouter({
         performerBio:z.string()
     }))
     .mutation(async ({input,ctx})=>{
-        let data = await ctx.prisma.performer.update({
+        const data = await ctx.prisma.performer.update({
             where:{
                 id:input.performerId
             },

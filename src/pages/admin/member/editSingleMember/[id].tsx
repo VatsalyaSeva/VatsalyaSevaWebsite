@@ -14,7 +14,7 @@ EditMember.getInitialProps = async (ctx: { query: { id: string } }) => {
 }
 
 export default function EditMember(pageProp:AppProps['pageProps']){
-    let router = useRouter()
+    const router = useRouter()
     const getSingleMember = api.member.getById.useQuery({id:pageProp.id})
     const updateSingleMember = api.member.updateMember.useMutation()
 
@@ -28,7 +28,7 @@ export default function EditMember(pageProp:AppProps['pageProps']){
 
     useEffect(()=>{
         if(getSingleMember.isSuccess){
-            let data = getSingleMember.data
+            const data = getSingleMember.data
             if(data != null){
                 setMemberName(data.name)
                 setPhoneNumber(data.phoneNumber)

@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import UserLayout from '../../components/userLayout'
 
-export default function donations() {
+export default function Donations() {
     const [isIndia, setIsIndia] = useState<boolean>(true)
     return (
         <UserLayout>
