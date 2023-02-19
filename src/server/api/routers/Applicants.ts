@@ -53,7 +53,7 @@ const Applicants = createTRPCRouter({
     deleteSingle:publicProcedure
     .input(z.object({id:z.string()}))
     .mutation(async ({input,ctx})=>{
-        let data = ctx.prisma.applicant.delete({
+        let data = await ctx.prisma.applicant.delete({
             where:{
                 id:input.id
             }
