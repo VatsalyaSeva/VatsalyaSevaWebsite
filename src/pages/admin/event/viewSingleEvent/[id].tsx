@@ -24,7 +24,7 @@ let ModeType = {
 
 type ModelKeys = keyof typeof ModeType;
 
-viewSingleEvent.getInitialProps = async (ctx: { query: { id: any; }; }) => {
+viewSingleEvent.getInitialProps = async (ctx: { query: { id: string; }; }) => {
   return { id: ctx.query.id };
 };
 

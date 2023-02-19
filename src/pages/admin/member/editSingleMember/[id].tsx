@@ -9,7 +9,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import dynamic from 'next/dynamic'
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), { ssr: false });
 
-EditMember.getInitialProps = async (ctx: { query: { id: any } }) => {
+EditMember.getInitialProps = async (ctx: { query: { id: string } }) => {
     return { id:ctx.query.id }
 }
 

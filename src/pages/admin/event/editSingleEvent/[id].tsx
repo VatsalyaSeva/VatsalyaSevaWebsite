@@ -10,7 +10,7 @@ type props = {
     id:string
 }
 
-CreateEvent.getInitialProps = async (ctx: { query: { id: any } }) => {
+CreateEvent.getInitialProps = async (ctx: { query: { id: string } }) => {
     return { id:ctx.query.id }
 }
 
@@ -25,9 +25,7 @@ export default function CreateEvent({ id }:props) {
     const [error, setError] = useState<string>('')
 
     useEffect(()=>{
-        if(getEvent.isLoading){
 
-        }
         if(getEvent.isSuccess){
             if(getEvent.data){
                 let { name, location, description, dateTime } = getEvent.data

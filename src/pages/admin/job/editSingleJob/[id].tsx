@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import Lottie from 'lottie-react'
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), { ssr: false });
 
-EditJob.getInitialProps = async (ctx: { query: { id: any } }) => {
+EditJob.getInitialProps = async (ctx: { query: { id: string } }) => {
     return { id:ctx.query.id }
 }
 

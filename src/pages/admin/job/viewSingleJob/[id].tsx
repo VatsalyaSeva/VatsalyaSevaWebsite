@@ -16,7 +16,7 @@ import { sanityClient } from '../../../../server/storage';
 import { basename } from 'path';
 
 
-viewSingleJob.getInitialProps = async (ctx: { query: { id: any; }; }) => {
+viewSingleJob.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 

@@ -5,16 +5,14 @@ import { Loader } from '../../../../components/loader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faEdit, faDeleteLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
-import { GetServerSideProps } from 'next';
-import ReactHtmlParser from 'react-html-parser'; 
+
 import { AppProps } from 'next/app';
 import { api } from '../../../../utils/api';
-import moment from 'moment';
 import { useFilePicker } from 'use-file-picker';
 import { sanityClient } from '../../../../server/storage';
 import { basename } from 'path';
 
-viewSingleMember.getInitialProps = async (ctx: { query: { id: any; }; }) => {
+viewSingleMember.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
 }
 
