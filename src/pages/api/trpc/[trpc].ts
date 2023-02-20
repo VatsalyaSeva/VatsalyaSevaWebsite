@@ -32,7 +32,7 @@ export default async function handler(
   // If you need to make authenticated CORS calls then
   // remove what is above and uncomment the below code
   // Allow-Origin has to be set to the requesting domain that you want to send the credentials back to
-  // res.setHeader('Access-Control-Allow-Origin', 'http://example:6006');
+  // res.setHeader('Access-Control-Allow-Origin', 'https://vatsalyaseva-p2snlpt74-vatsalyaseva.vercel.app');
   // res.setHeader('Access-Control-Request-Method', '*');
   // res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
   // res.setHeader('Access-Control-Allow-Headers', 'content-type');
