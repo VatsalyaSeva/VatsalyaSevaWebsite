@@ -41,6 +41,7 @@ export default function Jobs(pageProp: { id: string }) {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [serverError, setServerError] = useState<string>("");
   const [jobData, jobSetData] = useState<Vacancy>({} as Vacancy);
+  const [applicationID,setApplicationID] = useState<string>('')
 
   const getSingleJob = api.vacancy.getById.useQuery({
     id: pageProp.id,
@@ -53,6 +54,7 @@ export default function Jobs(pageProp: { id: string }) {
       const data = getSingleJob.data;
       if (data) {
         jobSetData(data);
+        
       }
     }
   }, [getSingleJob.data]);
@@ -61,16 +63,18 @@ export default function Jobs(pageProp: { id: string }) {
     if(addApplicant.isLoading){
         setIsLoading(true)
     }
-    if (addApplicant.isError) {
-      setServerError(addApplicant.error.message);
-      setIsLoading(false)
-    }
     if (addApplicant.isSuccess) {
       const a = addApplicant.data;
       if (a.code == 400) {
         setServerError(a.message);
+        if(a.data?.id){
+          setApplicationID(a.data.id)
+        }
         setIsLoading(false)
       } else {
+        if(a.data){
+          setApplicationID(a.data.id)
+        }
         setIsSuccess(true);
       }
     }
@@ -156,13 +160,13 @@ export default function Jobs(pageProp: { id: string }) {
                         {isSuccess && 
                           <Box>
                             <Heading size={'md'}>Application Submitted Successfully</Heading> 
-                            <Text>Your Application ID:- {addApplicant.data?.data.id}</Text>
+                            <Text>Your Application ID:- {applicationID}</Text>
                           </Box>
                         }
                         {serverError.length>0 && 
                           <Box>
                             <Heading size={'md'}>{serverError}</Heading>
-                            <Text>Your Application ID:- {addApplicant.error?.data[0].id}</Text>
+                            <Text>Your Application ID:- {applicationID}</Text>
                           </Box>
                         }
                     </Box>:

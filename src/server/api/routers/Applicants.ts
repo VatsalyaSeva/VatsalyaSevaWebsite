@@ -102,7 +102,7 @@ const Applicants = createTRPCRouter({
             return {
                 code:400,
                 message:'Your Application is already submitted',
-                data:a
+                data:a[0]
             }
         }
 
