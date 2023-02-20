@@ -77,7 +77,7 @@ const Applicants = createTRPCRouter({
         const a = await ctx.prisma.applicant.findMany({
             where:{
                 vacancyId:input.vacancyId,
-                email:input.add.email
+                phone:input.add.phone
             }
         })
 
@@ -101,7 +101,8 @@ const Applicants = createTRPCRouter({
             ctx.sanityClient.delete(input.add.cvFilePath)
             return {
                 code:400,
-                message:'Your Application is already submitted'
+                message:'Your Application is already submitted',
+                data:a
             }
         }
 

@@ -22,6 +22,8 @@
     "react/no-unescaped-entities":"off",
     "react/jsx-key":"off",
     "react/jsx-no-target-blank":"off",
-    "prefer-const":"off"
+    "prefer-const":"off",
+    "react/no-children-prop":"off",
+    "next/next/no-html-link-for-pages":"off"
   }
 }

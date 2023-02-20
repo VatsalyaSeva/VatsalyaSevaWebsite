@@ -8,10 +8,10 @@ export default function UserLayout({
 }) {
 
   return (
-    <div className=''>
+    <div className='w-[100vw]'>
       <NavBar />
       {children}
-      <Footer />
+      
     </div>
   )
 }

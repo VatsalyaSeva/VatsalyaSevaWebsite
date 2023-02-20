@@ -8,6 +8,8 @@ import { Events, Vacancy } from '@prisma/client'
 import moment from 'moment'
 import Link from 'next/link'
 import { api } from "../utils/api";
+import Footer from '../components/footer';
+
 
 const Home:NextPage = ()=> {
     const router = useRouter()
@@ -49,7 +51,7 @@ const Home:NextPage = ()=> {
                 </div>
                 <div className=' w-full px-5 py-5'>
 
-                <div className='mt-8'>
+                {/* <div className='mt-8'>
                     <p className='font-bold text-xl text-black py-1'>All Vacancy</p>
                     <div className='flex flex-row space-x-5'>
                         {jobList.map((item, index) => {
@@ -87,10 +89,11 @@ const Home:NextPage = ()=> {
                             )
                         })}
                     </div>
-                </div>
+                </div> */}
  
             </div>
             </div>
+            <Footer/>
         </UserLayout>
     )
 }
