@@ -139,24 +139,3 @@ export default function EditMember(pageProp:AppProps['pageProps']){
         </div>
     )
 }
-
-export const getServerSideProps = withIronSessionSsr(async function ({
-    req,
-    res,
-  }) {
-    const user = req.session.user;
-  
-    if (!user?.isLoggedIn) {
-      return {
-        redirect: {
-          destination: "/admin",
-          permanent: false,
-        },
-      };
-    }
-  
-    return {
-      props: {},
-    };
-  },
-  sessionOptions);

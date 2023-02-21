@@ -247,23 +247,3 @@ export default function ViewSingleJob(pageProp: AppProps["pageProps"]) {
   );
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({
-  req,
-  res,
-}) {
-  const user = req.session.user;
-
-  if (!user?.isLoggedIn) {
-    return {
-      redirect: {
-        destination: "/admin",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-},
-sessionOptions);

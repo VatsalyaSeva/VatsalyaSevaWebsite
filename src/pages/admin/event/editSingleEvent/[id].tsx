@@ -127,23 +127,3 @@ export default function CreateEvent({ id }:props) {
     )
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({
-    req,
-    res,
-  }) {
-    const user = req.session.user;
-  
-    if (!user?.isLoggedIn) {
-      return {
-        redirect: {
-          destination: "/admin",
-          permanent: false,
-        },
-      };
-    }
-  
-    return {
-      props: {},
-    };
-  },
-  sessionOptions);
