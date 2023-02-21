@@ -4,7 +4,7 @@ import { env } from "../../../env.mjs";
 import { createTRPCContext } from "../../../server/api/trpc";
 import { appRouter } from "../../../server/api/root";
 import { NextApiRequest, NextApiResponse } from "next";
-
+import { getIronSession, IronSessionOptions } from "iron-session";
 // export API handler
 const nextApiHandler =  createNextApiHandler({
   router: appRouter,
@@ -23,6 +23,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+
+  
+  const session = await getIronSession(req, res, {
+    cookieName: "myapp_cookiename",
+    password: "complex_password_at_least_32_characters_long",
+    // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
+    cookieOptions: {
+      secure: process.env.NODE_ENV === "production",
+    },})
   // Modify `req` and `res` objects here
   // In this case, we are enabling CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -38,6 +47,11 @@ export default async function handler(
   // res.setHeader('Access-Control-Allow-Headers', 'content-type');
   // res.setHeader('Referrer-Policy', 'no-referrer');
   // res.setHeader('Access-Control-Allow-Credentials', 'true');
+  // if (user?.admin !== "true") {
+  //   // unauthorized to see pages inside admin/
+  //   return NextResponse.redirect(new URL('/unauthorized', req.url)) // redirect to /unauthorized page
+  // }
+  console.log(session)
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     return res.end();

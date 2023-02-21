@@ -6,6 +6,8 @@ import { api } from "../../../utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Lottie from "lottie-react";
+import { sessionOptions } from "../../../server/api/trpc";
+import { withIronSessionSsr } from "iron-session/next";
 
 
 export default function JobList() {
@@ -41,7 +43,7 @@ export default function JobList() {
         </div> :
         <div className="w-[100vw] h-min-[100vh] md:px-8 px-4 py-5">
             <div className="flex justify-between items-center mb-8">
-                <button className='flex flex-row items-center space-x-2' onClick={()=> route.replace('/admin')}>
+                <button className='flex flex-row items-center space-x-2' onClick={()=> route.replace('/admin/dashboard')}>
                     <FontAwesomeIcon icon={faArrowLeft} fontSize={20}/>
                     <p className='md:text-xl text-lg font-bold py-2 items-center mr-3'>Dashboard</p>
                 </button>
@@ -91,3 +93,24 @@ export default function JobList() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

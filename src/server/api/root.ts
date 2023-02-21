@@ -4,13 +4,15 @@ import Applicants from "./routers/Applicants"
 import Event from './routers/Event'
 import { Member } from "./routers/Member";
 import { HomeImage } from './routers/HomeImage';
+import Admin from "./routers/Admin";
 
 export const appRouter = createTRPCRouter({
   event:Event,
   vacancy:Vacancy,
   applicants:Applicants,
   member:Member,
-  homeImage:HomeImage
+  homeImage:HomeImage,
+  admin:Admin
 });
 
 

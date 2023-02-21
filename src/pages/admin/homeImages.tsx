@@ -8,6 +8,8 @@ import { FilePickerReturnTypes, useFilePicker } from 'use-file-picker'
 import { sanityClient } from '../../server/storage'
 import { basename } from 'path'
 import Lottie from "lottie-react";
+import { sessionOptions } from '../../server/api/trpc'
+import { withIronSessionSsr } from 'iron-session/next'
 
 export default function Carousal() {
     const router = useRouter()
@@ -130,3 +132,24 @@ export default function Carousal() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

@@ -5,6 +5,8 @@ import React,{ useState, FC, FormEvent, useEffect } from "react"
 import {useRouter} from "next/navigation";
 import { api } from "../../../utils/api";
 import Lottie from "lottie-react";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../../../server/api/trpc";
 
 const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), { ssr: false });
 
@@ -137,3 +139,24 @@ export default function CreateJobs() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

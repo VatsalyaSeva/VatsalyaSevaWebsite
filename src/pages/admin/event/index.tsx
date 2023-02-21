@@ -4,6 +4,8 @@ import { api } from '../../../utils/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
+import { withIronSessionSsr } from 'iron-session/next'
+import { sessionOptions } from '../../../server/api/trpc'
 
 type EventType = 
     Events & {
@@ -36,7 +38,7 @@ export default function EventList() {
     return (
         <div className="container w-[100vw] h-min-[100vh] px-8 py-5">
             <div className="flex justify-between items-center mb-8">
-                <button className='flex flex-row items-center space-x-2' onClick={()=> router.replace('/admin')}>
+                <button className='flex flex-row items-center space-x-2' onClick={()=> router.replace('/admin/dashboard')}>
                     <FontAwesomeIcon icon={faArrowLeft} fontSize={24}/>
                     <p className='text-xl font-bold py-2 items-center mr-3'>Dashboard</p>
                 </button>
@@ -94,3 +96,24 @@ export default function EventList() {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

@@ -1,41 +1,38 @@
-/**
- * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
- * 1. You want to modify request context (see Part 1).
- * 2. You want to create a new middleware or type of procedure (see Part 3).
- *
- * tl;dr - This is where all the tRPC server stuff is created and plugged in.
- * The pieces you will need to use are documented accordingly near the end.
- */
 
-/**
- * 1. CONTEXT
- *
- * This section defines the "contexts" that are available in the backend API.
- *
- * These allow you to access things when processing a request, like the
- * database, the session, etc.
- */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-
+import type { IronSessionOptions } from "iron-session";
+import * as trpcNext from "@trpc/server/adapters/next";
+import { getIronSession } from "iron-session";
 import { prisma } from "../db";
 import { sanityClient } from "../storage";
 
 type CreateContextOptions = Record<string, never>;
 
-/**
- * This helper generates the "internals" for a tRPC context. If you need to use
- * it, you can export it from here.
- *
- * Examples of things you may need it for:
- * - testing, so we don't have to mock Next.js' req/res
- * - tRPC's `createSSGHelpers`, where we don't have req/res
- *
- * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
- */
-const createInnerTRPCContext = (_opts: CreateContextOptions) => {
+export type User = {
+  isLoggedIn: boolean;
+};
+
+export const sessionOptions: IronSessionOptions = {
+  password: '12345678901234567890123456789032',
+  cookieName: "user",
+  cookieOptions: {
+    secure: process.env.NODE_ENV === "production",
+  },
+};
+
+// This is where we specify the typings of req.session.*
+declare module "iron-session" {
+  interface IronSessionData {
+    user?: User;
+  }
+}
+
+
+const createInnerTRPCContext = async (opts: trpcNext.CreateNextContextOptions) => {
+  const session = await getIronSession(opts.req, opts.res, sessionOptions);
   return {
     prisma,
-    sanityClient
+    sanityClient,
+    session
   };
 };
 
@@ -45,8 +42,8 @@ const createInnerTRPCContext = (_opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (_opts: CreateNextContextOptions) => {
-  return createInnerTRPCContext({});
+export const createTRPCContext = (opts: trpcNext.CreateNextContextOptions) => {
+  return createInnerTRPCContext(opts);
 };
 
 /**

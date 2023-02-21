@@ -14,6 +14,8 @@ import Lottie from "lottie-react";
 import { useFilePicker } from "use-file-picker";
 import { sanityClient } from "../../../../server/storage";
 import { basename } from "path";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../../../../server/api/trpc";
 
 ViewSingleJob.getInitialProps = async (ctx: { query: { id: string } }) => {
   return { id: ctx.query.id };
@@ -244,3 +246,24 @@ export default function ViewSingleJob(pageProp: AppProps["pageProps"]) {
     </div>
   );
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+  req,
+  res,
+}) {
+  const user = req.session.user;
+
+  if (!user?.isLoggedIn) {
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+},
+sessionOptions);

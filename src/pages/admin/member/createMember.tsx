@@ -7,6 +7,8 @@ import { basename } from "path"
 import fs from "fs-extra"
 import { fileURLToPath } from "url"
 import { api } from "../../../utils/api"
+import { sessionOptions } from "../../../server/api/trpc"
+import { withIronSessionSsr } from "iron-session/next"
 
 
 export default function CreateMember({}) {
@@ -156,3 +158,24 @@ export default function CreateMember({}) {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

@@ -1,48 +1,71 @@
-import { faCalendar, faCoins, faFile, faImage, faUser } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { useRouter } from 'next/navigation'  
+import {
+  faCalendar,
+  faCoins,
+  faFile,
+  faImage,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Box, Button, Center, Flex, FormControl, FormLabel, Heading, Input, Stack,Image } from "@chakra-ui/react";
+import { api } from "../../utils/api";
 
 export default function Admin() {
-    const router = useRouter()
+  const router = useRouter();
 
-    return (
-        <div className="container grid grid-rows-[1fr_300px] h-min-[100vh] w-[100vw] place-content-center">
-            
-            <div>
-                <p className='text-xl my-2 font-medium'>Actions</p>
-                <div className='grid grid-cols-2 md:grid-cols-5 self-center gap-x-5 gap-y-5 place-content-center'>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
-                    onClick={()=> router.replace('/admin/homeImages')}>
-                        <FontAwesomeIcon icon={faImage} fontSize={30} color={'white'}/>
-                        <p>Carousal</p>
-                    </div>
-                    
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
-                    onClick={()=> router.replace('/admin/member')}>
-                        <FontAwesomeIcon icon={faUser} fontSize={30} color={'white'}/>
-                        <p>Members</p>
-                    </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
-                     onClick={()=> router.replace('/admin/job')}
-                    >
-                    <FontAwesomeIcon icon={faFile} fontSize={30} color={'white'}/>
-                        <p>Vacancy</p>
-                    </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
-                     onClick={()=> router.replace('/admin/event')}
-                    >
-                    <FontAwesomeIcon icon={faCalendar} fontSize={30} color={'white'}/>
-                        <p>Events</p>
-                    </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
-                     onClick={()=> router.replace('/admin/donation')}
-                    >
-                    <FontAwesomeIcon icon={faCoins} fontSize={30} color={'white'}/>
-                        <p>Donations</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+  const [email,setEmail] = useState<string>('')
+  const [password,setPassword] = useState<string>('')
+
+  const login = api.admin.login.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+      router.replace('/admin/dashboard')
+    },
+    onError: (data) => {
+      console.log(data);
+    },
+  });
+
+  return (
+    <Flex width={'100vw'} height={'100vh'}>
+      <Center width={'100%'} height={'100%'}>
+        <Stack spacing={5}>
+          <Box>
+            <Image src={'/logo.jpg'} width={'200px'} height={'250px'}/>
+          </Box>
+        {/* <Heading fontSize={'xl'} textAlign='center' mb='8' mt='2'>Admin Login</Heading> */}
+          <FormControl isRequired>
+            <FormLabel size={"xs"}>Enter Email</FormLabel>
+            <Input
+              size={"md"}
+              variant="outline"
+              type={"text"}
+              name="name"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter name"
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel size={"xs"}>Enter Password</FormLabel>
+            <Input
+              size={"md"}
+              variant="outline"
+              type={"text"}
+              name="name"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter name"
+            />
+          </FormControl>
+          <Button
+              onClick={()=> login.mutate({
+                  email:email,
+                  password:password
+              })}
+          >Login</Button>
+          
+        </Stack>
+      </Center>
+    </Flex>
+  );
 }

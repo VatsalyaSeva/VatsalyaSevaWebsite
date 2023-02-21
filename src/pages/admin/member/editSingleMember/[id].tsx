@@ -7,6 +7,8 @@ import { api } from '../../../../utils/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import dynamic from 'next/dynamic'
+import { sessionOptions } from '../../../../server/api/trpc'
+import { withIronSessionSsr } from 'iron-session/next'
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), { ssr: false });
 
 EditMember.getInitialProps = async (ctx: { query: { id: string } }) => {
@@ -138,3 +140,23 @@ export default function EditMember(pageProp:AppProps['pageProps']){
     )
 }
 
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

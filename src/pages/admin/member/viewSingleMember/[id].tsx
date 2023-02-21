@@ -11,6 +11,8 @@ import { api } from '../../../../utils/api';
 import { useFilePicker } from 'use-file-picker';
 import { sanityClient } from '../../../../server/storage';
 import { basename } from 'path';
+import { sessionOptions } from '../../../../server/api/trpc';
+import { withIronSessionSsr } from 'iron-session/next';
 
 ViewSingleMember.getInitialProps = async (ctx: { query: { id: string; }; }) => {
     return { id:ctx.query.id }
@@ -147,3 +149,24 @@ export default function ViewSingleMember(pageProp:AppProps['pageProps']){
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

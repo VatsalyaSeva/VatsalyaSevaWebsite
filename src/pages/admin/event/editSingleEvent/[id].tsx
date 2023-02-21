@@ -4,6 +4,8 @@ import { FormEvent, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { api } from '../../../../utils/api'
 import dynamic from 'next/dynamic'
+import { withIronSessionSsr } from 'iron-session/next'
+import { sessionOptions } from '../../../../server/api/trpc'
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), { ssr: false });
 
 type props = {
@@ -124,3 +126,24 @@ export default function CreateEvent({ id }:props) {
         </div>
     )
 }
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);

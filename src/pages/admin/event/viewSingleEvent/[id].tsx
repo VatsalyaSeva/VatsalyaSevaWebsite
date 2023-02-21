@@ -12,6 +12,8 @@ import { api } from "../../../../utils/api";
 import moment from "moment";
 import Modal from "react-overlays/Modal";
 import { sanityClient } from "../../../../server/storage";
+import { withIronSessionSsr } from "iron-session/next";
+import { sessionOptions } from "../../../../server/api/trpc";
 
 let ModeType = {
   cover: "cover",
@@ -954,6 +956,7 @@ const AddOrganizer = ({id,onSubmitSuccess,data}:OrganizerType)=>{
 
     useEffect(()=>{
         if(getAllMember.isSuccess){
+          
             const filtered = getAllMember.data.filter(element => {
                 return !data.some(item => item.memberId === element.id)
               })
@@ -1025,3 +1028,25 @@ const AddOrganizer = ({id,onSubmitSuccess,data}:OrganizerType)=>{
         </div>
     )
 }
+
+
+export const getServerSideProps = withIronSessionSsr(async function ({
+  req,
+  res,
+}) {
+  const user = req.session.user;
+
+  if (!user?.isLoggedIn) {
+    return {
+      redirect: {
+        destination: "/admin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+},
+sessionOptions);

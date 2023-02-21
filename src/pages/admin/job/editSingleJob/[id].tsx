@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import dynamic from 'next/dynamic'
 import Lottie from 'lottie-react'
+import { withIronSessionSsr } from 'iron-session/next'
+import { sessionOptions } from '../../../../server/api/trpc'
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), { ssr: false });
 
 EditJob.getInitialProps = async (ctx: { query: { id: string } }) => {
@@ -158,3 +160,23 @@ export default function EditJob(pageProp:AppProps['pageProps']){
     )
 }
 
+export const getServerSideProps = withIronSessionSsr(async function ({
+    req,
+    res,
+  }) {
+    const user = req.session.user;
+  
+    if (!user?.isLoggedIn) {
+      return {
+        redirect: {
+          destination: "/admin",
+          permanent: false,
+        },
+      };
+    }
+  
+    return {
+      props: {},
+    };
+  },
+  sessionOptions);
