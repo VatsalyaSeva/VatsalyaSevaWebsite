@@ -71,7 +71,7 @@ export default function Carousal() {
         <div className="container px-5 h-min-[100vh] w-[100vw] place-content-center flex justify-center my-10">
             <div className='w-[80vw]'>
                 <div className='w-min-[50vw] flex justify-between items-center'>
-                    <div className='flex space-x-2 items-center' onClick={()=> router.replace('/admin')}>
+                    <div className='flex space-x-2 items-center' onClick={()=> router.replace('/admin/dashboard')}>
                         <FontAwesomeIcon icon={faArrowLeft} fontSize={24} color='black'/>
                         <p className='text-xl my-2 font-medium'>Dashboard</p>
                     </div>
