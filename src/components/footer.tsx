@@ -17,19 +17,18 @@ export default function Footer() {
                 </div>
                 <div className=' lg:w-1/3 flex flex-col items-center'>
                     <p className='text-lg font-semibold text-red-800'>Contact Details</p>
-                    <p>Contact no.  +91 XXXXXXXXXX</p>
-                    <p>Whatsapp no. +91 XXXXXXXXXX</p>
-                    <p>Mail address. info@vatsalyaseva.org</p>
+                    <p>Contact no.  +91 7727872633</p>
+                    <p>Whatsapp no. +91 7727872633</p>
+                    <p>Mail address. vatslyasevasesthan@gmail.com</p>
                 </div>
-                <div className='space-y-2 lg:w-1/3 flex flex-col items-center '>
+<!--                 <div className='space-y-2 lg:w-1/3 flex flex-col items-center '>
                     <p className='text-lg font-semibold text-red-800'>Quick Links</p>
                     <p className=''>Donations</p>
                     <p>Events</p>
                     <p>Jobs</p>
-                    <p>FAQs</p>
-                    <p>Privacy Police</p>
+                    
 
-                </div>
+                </div> -->
             </div>
         </div>
     )
