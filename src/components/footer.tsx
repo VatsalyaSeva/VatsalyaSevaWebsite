@@ -21,14 +21,7 @@ export default function Footer() {
                     <p>Whatsapp no. +91 7727872633</p>
                     <p>Mail address. vatslyasevasesthan@gmail.com</p>
                 </div>
-<!--                 <div className='space-y-2 lg:w-1/3 flex flex-col items-center '>
-                    <p className='text-lg font-semibold text-red-800'>Quick Links</p>
-                    <p className=''>Donations</p>
-                    <p>Events</p>
-                    <p>Jobs</p>
-                    
-
-                </div> -->
+                
             </div>
         </div>
     )
