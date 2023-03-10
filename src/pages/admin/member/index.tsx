@@ -8,6 +8,8 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/navigation'
 import { withIronSessionSsr } from "iron-session/next";
 import { sessionOptions } from '../../../server/api/trpc'
+import { Center,Flex } from '@chakra-ui/react'
+import Lottie from 'lottie-react'
 
 export default function Members() {
     const getAllMembers = api.member.getAll.useQuery()
@@ -29,10 +31,8 @@ export default function Members() {
         }
     },[deleteMember.data])
     
-    return (getAllMembers.isLoading ?
-        <div className="grid place-content-center h-[400px] w-[100vw] ">
-            <p className="font-bold text-xl text-black">Loading Data...</p>
-        </div> :
+    return (
+        
         <div className="w-[100vw] h-min-[100vh] md:px-8 px-4 py-5">
             <div className="flex justify-between items-center mb-8">
                 <button className='flex flex-row items-center space-x-2' onClick={()=> router.replace('/admin/dashboard')}>
@@ -43,6 +43,16 @@ export default function Members() {
                     onClick={()=> router.push('/admin/member/createMember')}
                 >Create New</button>
             </div>
+            {getAllMembers.isLoading ?
+                <Flex >
+                    <Center height='200px' width={'100vw'}>
+                    <Lottie 
+                        animationData={require('../../../../public/lottie/loading.json')}
+                        className='h-[50px] w-[50px]'
+                    />
+                    </Center>
+                </Flex>
+                :
             <div className="space-y-1">
                 {members.length > 0 ?
                     members.map((item, index) => {
@@ -74,7 +84,7 @@ export default function Members() {
                         <p>No Record Found</p>
                     </div>
                 }
-            </div>
+            </div>}
         </div>
     )
 }

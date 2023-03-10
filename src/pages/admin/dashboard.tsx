@@ -47,13 +47,13 @@ export default function Admin() {
                     <FontAwesomeIcon icon={faFile} fontSize={30} color={'white'}/>
                         <p>Vacancy</p>
                     </div>
-                    {/* <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
                      onClick={()=> router.replace('/admin/event')}
                     >
                     <FontAwesomeIcon icon={faCalendar} fontSize={30} color={'white'}/>
                         <p>Events</p>
                     </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                    {/* <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
                      onClick={()=> router.replace('/admin/donation')}
                     >
                     <FontAwesomeIcon icon={faCoins} fontSize={30} color={'white'}/>

@@ -8,6 +8,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Lottie from "lottie-react";
 import { sessionOptions } from "../../../server/api/trpc";
 import { withIronSessionSsr } from "iron-session/next";
+import { Center,Flex } from "@chakra-ui/react";
 
 
 export default function JobList() {
@@ -34,13 +35,7 @@ export default function JobList() {
         }
     },[deleteVacancy.data])
 
-    return (getVacancyList.isLoading ?
-        <div className="grid place-content-center h-[400px] w-[100vw]">
-            <Lottie 
-                animationData={require('../../../../public/lottie/loading.json')}
-                className='h-[50px] w-[50px]'
-            />
-        </div> :
+    return (
         <div className="w-[100vw] h-min-[100vh] md:px-8 px-4 py-5">
             <div className="flex justify-between items-center mb-8">
                 <button className='flex flex-row items-center space-x-2' onClick={()=> route.replace('/admin/dashboard')}>
@@ -51,6 +46,16 @@ export default function JobList() {
                     onClick={()=> route.push('/admin/job/addNewJob')}
                 >Create New</button>
             </div>
+            {getVacancyList.isLoading ?
+                <Flex >
+                    <Center height='200px' width={'100vw'}>
+                    <Lottie 
+                        animationData={require('../../../../public/lottie/loading.json')}
+                        className='h-[50px] w-[50px]'
+                    />
+                    </Center>
+                </Flex>
+                :
             <div className="space-y-4">
                 {jobList.length > 0 ?
                     jobList.map((item, index) => {
@@ -89,7 +94,7 @@ export default function JobList() {
                         <p>No Record Found</p>
                     </div>
                 }
-            </div>
+            </div>}
         </div>
     )
 }
