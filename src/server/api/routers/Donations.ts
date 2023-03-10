@@ -1,6 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from 'zod'
-
+import Razorpay from "razorpay";
 
 export const Donator = createTRPCRouter({
     getAllRecord:publicProcedure
@@ -78,6 +78,25 @@ export const Donator = createTRPCRouter({
                 }
             }
         })
+        return res
+    }),
+    createRazerPayOrder:publicProcedure
+    .input(z.object({
+        amount:z.string(),
+        currency:z.string()
+    }))
+    .mutation(async ({input,ctx})=>{
+
+        let pay = new Razorpay({
+            key_id: 'rzp_test_8UPUyLkgsd2CFB',
+            key_secret: '1EA3emmgWvygHHmeFb8u1b05'
+        }) 
+
+        let res = await pay.orders.create({
+            amount: input.amount,
+            currency: input.currency,
+        })
+
         return res
     })
 })

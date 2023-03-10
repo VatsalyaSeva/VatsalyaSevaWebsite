@@ -33,7 +33,7 @@ export default function Jobs() {
         All Jobs
       </Heading>
       {jobList.length>0 ? 
-        <Grid templateColumns='repeat(3, 1fr)' gap={6} mx={'4'} >
+        <Grid templateColumns={{lg:'repeat(3, 1fr)',sm:'repeat(1,1fr)'}} gap={6} mx={'4'} >
         {jobList.map((item, index) => {
           return (
             <GridItem w='100%' h='100%' bg={'gray.50'} px='5' py='5'rounded={'xl'} boxShadow={'lg'} >
@@ -43,13 +43,13 @@ export default function Jobs() {
                         <p className="pb-2 text-sm">
                         {ReactHtmlParser(item.vacancyDescription.slice(0, 90))}
                         </p>
-                        <div className="flex flex-row items-center justify-between border-t-2 border-t-red-600 pt-3">
+                        <div className="flex lg:flex-row sm:flex-column items-center justify-between border-t-2 border-t-red-600 pt-3">
                         <p className="text-sm font-medium text-gray-700">
                             Job Location
                         </p>
                         <p className="text-sm">{item.location}</p>
                         </div>
-                        <div className="flex flex-row items-center justify-between">
+                        <div className="flex lg:flex-row sm:flex-column items-center justify-between">
                         <p className="text-sm font-medium text-gray-700">
                             Accepted Salary
                         </p>

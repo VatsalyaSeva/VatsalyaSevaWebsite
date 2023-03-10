@@ -5,6 +5,7 @@ import Event from './routers/Event'
 import { Member } from "./routers/Member";
 import { HomeImage } from './routers/HomeImage';
 import Admin from "./routers/Admin";
+import { Donator } from "./routers/Donations";
 
 export const appRouter = createTRPCRouter({
   event:Event,
@@ -12,7 +13,8 @@ export const appRouter = createTRPCRouter({
   applicants:Applicants,
   member:Member,
   homeImage:HomeImage,
-  admin:Admin
+  admin:Admin,
+  donation:Donator
 });
 
 
