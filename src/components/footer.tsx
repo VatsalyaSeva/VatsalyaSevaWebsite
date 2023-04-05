@@ -39,10 +39,10 @@ export default function Footer() {
                     <p className='bg-red-500 px-3 py-2 text-white rounded-tr-lg rounded-br-lg'>Donate</p>
                 </button>
             </div>
-            <div className='w-full flex sm:flex-row flex-col align-center px-10 pb-5 space-y-5'>
+            <div className='w-full flex md:flex-row flex-col items-center justify-evenly px-10 pb-5 space-y-5'>
                 <div className='lg:w-1/3 flex flex-col items-center'>
                     <p className=' text-lg font-semibold text-red-800'>Contact Address</p>
-                    <p className='text-center'>Vatsalya Seva Sansthan, Sector 6, Savina Udaipur (Rajasthan)- 313001</p>
+                    <p className='text-center max-w-[300px]'>Vatsalya Seva Sansthan, Sector 6, Savina Udaipur (Rajasthan)- 313001</p>
                 </div>
                 <div className=' lg:w-1/3 flex flex-col items-center'>
                     <p className='text-lg font-semibold text-red-800'>Contact Details</p>
