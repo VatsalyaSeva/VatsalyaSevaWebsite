@@ -28,30 +28,30 @@ export default function Admin() {
               </ButtonGroup>
             </Flex>
             <div>
-                <p className='text-xl my-2 font-medium'>Actions</p>
-                <div className='grid grid-cols-2 md:grid-cols-5 self-center gap-x-5 gap-y-5 place-content-center'>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
+                {/* <p className='text-xl my-2 font-medium'>Actions</p> */}
+                <div className='grid grid-cols-2 md:grid-cols-4 self-center gap-x-5 gap-y-5 place-content-center'>
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-xl space-y-3 cursor-pointer hover:bg-teal-700 group' 
                     onClick={()=> router.replace('/admin/homeImages')}>
-                        <FontAwesomeIcon icon={faImage} fontSize={30} color={'white'}/>
-                        <p>Carousal</p>
+                        <FontAwesomeIcon icon={faImage} fontSize={30} color={'white'} className='group-hover:text-[38px]  '/>
+                        <p className='group-hover:text-white'>Carousal</p>
                     </div>
                     
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3' 
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-xl space-y-3 cursor-pointer hover:bg-teal-700 group' 
                     onClick={()=> router.replace('/admin/member')}>
-                        <FontAwesomeIcon icon={faUser} fontSize={30} color={'white'}/>
-                        <p>Members</p>
+                        <FontAwesomeIcon icon={faUser} fontSize={30} color={'white'} className='group-hover:text-[38px] '/>
+                        <p className='group-hover:text-white'>Members</p>
                     </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-xl space-y-3 cursor-pointer hover:bg-teal-700 group'
                      onClick={()=> router.replace('/admin/job')}
                     >
-                    <FontAwesomeIcon icon={faFile} fontSize={30} color={'white'}/>
-                        <p>Vacancy</p>
+                    <FontAwesomeIcon icon={faFile} fontSize={30} color={'white'} className='group-hover:text-[38px] '/>
+                        <p className='group-hover:text-white'>Vacancy</p>
                     </div>
-                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
+                    <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-xl space-y-3 cursor-pointer hover:bg-teal-700 group'
                      onClick={()=> router.replace('/admin/event')}
                     >
-                    <FontAwesomeIcon icon={faCalendar} fontSize={30} color={'white'}/>
-                        <p>Events</p>
+                    <FontAwesomeIcon icon={faCalendar} fontSize={30} color={'white'} className='group-hover:text-[38px] '/>
+                        <p className='group-hover:text-white'>Events</p>
                     </div>
                     {/* <div className='flex flex-col justify-center items-center bg-tri h-[100px] w-[100px] rounded-lg space-y-3'
                      onClick={()=> router.replace('/admin/donation')}
