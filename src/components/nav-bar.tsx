@@ -22,7 +22,7 @@ export default function NavBar() {
           </span>
         </Link>
         
-        <div className="" >
+        <div className=" " >
           <ul className="flex ">
             <li className={`group lg:px-5 px-3 py-3 rounded-lg ${path == '/' && `border-b-4 border-b-amber-200 rounded-none`}`}>
               <Link
